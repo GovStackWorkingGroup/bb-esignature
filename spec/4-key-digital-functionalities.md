@@ -1,17 +1,26 @@
 # 4 Key Digital Functionalities
 
-{% hint style="success" %}
-The Key Digital Functionalities describe the core (required) functions that this building block must be able to perform. These functionalities should be described as business processes as opposed to technical specifications or API definitions.&#x20;
+Generally eSignature Building Block SHALL:
 
-Note, this section may be extended after the key functionalities have been listed to include any assumptions or context that is needed. Additionally, if the Building Block contains multiple components, the functionalities for each may be described.
-{% endhint %}
+* onboard the Signatories using the ID Building Block
+* enable unique identification of the Signatory in whose name the signature is given
+* create eSignatures by using private key in eSignature creation device to which the public key uniquely correspond.
+* enable determination of the time when the signature is given
+* enable linking the eSignature to data in such a manner as to preclude the possibility of changing the data undetectably after the signature is given.
+* enable verification of eSignatures
 
-_\<Example Key Digital Functionalities (based on ID Building Block)>_
+### Phase 1
 
-* The ID Building Block provides foundational identity services. Authentication is not provided by this Building Block
-* Foundational IDs come with no specified purpose or attached entitlement but functionalities simply let an entity prove who it is
-* Captures only limited information about users, such as name, date of birth, address and gender
-* For a given set of credentials, fetches a corresponding ID if it exists in the registry
-* Uses different biometric methods to identify and authenticate users through means other than user photographs (eg fingerprints, iris scans, facial recognition) to ensure there are no duplicates or fakes, creating a highly trustworthy database
-* Used to enable services such as opening bank accounts, buying SIM cards, receiving entitlements from the government, signing forms electronically, investing in mutual funds and getting credit
-* Incorporates privacy into its design when the purpose of the authentication is not revealed if a service provider sends an authentication request.
+Limit the scope of work to the following
+
+* Ability to create and manage keys in remote SCD. Requires Onboarding via ID Building block only once, after that user confirms the signature with PIN code on his/her device
+* Ability to create and manage dynamic short-lived keys in local SCD (HSM). Requires Onboarding via ID building block for every eSignature.
+* Generic use cases like payroll signing, agreement signing, consent, tax filing, request for registration, etc can be handled
+* Support for the following signature formats:
+  * XAdES
+  * CAdES
+  * ASIC
+  * JWS (RFC 7515)
+  * PAdES
+* No administrative APIs are needed to cater to this requirement. So administrative APIs will be left out of the scope
+* Client-side libraries to be provided to merge the signature with payload ( PDF, XML & JSON)

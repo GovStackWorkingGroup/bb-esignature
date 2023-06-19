@@ -53,6 +53,18 @@ describe this kdf and its sub-topics such as&#x20;
 
 ## 4.2 One-Time Signature:
 
+The various actors and their activities described in section 2 must be supported by a set of non-redundant, Key Digital Functionalities listed below:
+
+capture digital signature:  this gfdkff
+
+There may be two scenarios of digital signal capture (1) one-time-signatures (2) scd-based signature.....
+
+verify digital signature
+
+
+
+## 4.2 One-Time Signature:
+
 One-time signatures are one of the easiest ways to get large-scale adoption of eSignatures. This approach does not require any device to be owned by the end user.  This approach relies on the work done by the ID Building block to authenticate an end user.&#x20;
 
 * User authenticates against the ID BB

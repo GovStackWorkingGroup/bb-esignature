@@ -1,0 +1,971 @@
+
+"openapi": "3.0.2"
+"info":
+  "title": "Remote SCD API"
+  "description": "REST API for eSignature BB"
+  "version": "1.0.0"
+"servers":
+  -
+    "url": "http://localhost:9090"
+    "description": "Optional server description"
+"tags":
+  -
+    "name": "internal"
+    "description": "internal API"
+  -
+    "name": "cert"
+    "description": "Manage certificate lifecycle"
+  -
+    "name": "sign"
+    "description": "Signing"
+"paths":
+  "/{version}/token/pseodonym/{pseudonym}":
+    "get":
+      "tags":
+        - "internal"
+      "summary": "Get pseodunym token"
+      "description": "In order not to get the pseodonym token internally"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "path"
+          "name": "pseudonym"
+          "schema":
+            "type": "string"
+            "example": "johndoe5766"
+          "required": true
+          "description": "Unique pseudonym"
+      "responses":
+        "200":
+          "description": "Pseodonym token generated successfully"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "jwt":
+                    "type": "string"
+                    "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+                    "description": "jwt pseudonym authorization"
+                "example":
+                  "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/cert/create":
+    "post":
+      "tags":
+        - "cert"
+      "summary": "Create certificate"
+      "description": "Create certificate on user's SCD (Signature Creation Device)"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "header"
+          "name": "X-GovStack-AuthenticationToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": true
+          "description": "JWT Authentication token received from ID BB"
+        -
+          "in": "header"
+          "name": "X-GovStack-PaymentToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": false
+          "description": "JWT Authentication token received from Payment BB"
+      "requestBody":
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "CSR":
+                  "type": "string"
+                  "description": "Certificate Signing Request, in base64"
+                "SCDType":
+                  "type": "string"
+                  "enum":
+                    - "REMOTE_SCD_APP_APPLE"
+                    - "REMOTE_SCD_APP_ANDROID"
+                    - "REMOTE_SCD_APP_SE_APPLE"
+                    - "REMOTE_SCD_APP_SE_ANDROID"
+                    - "REMOTE_SCD_SIM"
+                    - "REMOTE_SCD_ESIM"
+                  "description": "Remote SCD type"
+                "SCDRemoteId":
+                  "type": "string"
+                  "description": "Device token (Android/Apple) for REMOTE_SCD_APP* and REMOTE_SCD_APP_SE*, for other TBD"
+                "SCDKeyId":
+                  "type": "number"
+                  "Description": "Key index to be used on SCD"
+                "pseodonym":
+                  "type": "string"
+                  "Description": "Optional pseodonym chosen by user"
+                "requestTimestamp":
+                  "type": "string"
+                  "format": "date-time"
+                  "Description": "Timestamp in ISO 8601"
+              "example":
+                "CSR": "-----BEGIN CERTIFICATE REQUEST-----\r\nMIICWDCCAUACAQAwEzERMA8GA1UEAwwISm9obiBEb2UwggEiMA0GCSqGSIb3DQEB\r\nAQUAA4IBDwAwggEKAoIBAQDVNn2MLtrc/w+BqU2WYT5+IBUx+E0m3s9VMfXjLJpJ\r\nWK5qna92wcyeJPCNcJDgYqMa15x/7OM6uyNXSQmwLAM6XYivCAR6OV8cF9jbpvh8\r\nUXVPp0zrX2uDGUxp73+Gcy2ARCtZSLF0MQGzJD7uHAR/LfYq+9hhlNqjP4jDr9uX\r\ngO+fnJjRY/tNg6IYKcV4RK52Qf/ZmPvKC7yBTOba2n/dlBeDj7HqUGKSVDOLtqa8\r\nW3XMFQpme9BYnpXMpGhu7vOD0Sm5gAOdMdlEILJLE4ZsQDyZSLxKAkuAQAKC5WPr\r\nYtCBYU4amIxvhXEUeUePMGvqACQargxtXpKOnU86dwXRAgMBAAGgADANBgkqhkiG\r\n9w0BAQsFAAOCAQEABmsIpQACArM5w7uQysuh6Aooe/fe6It9kYNccmHXf+Hta+i0\r\nzrXkOBZ80EuOFebuGzuc2R/cVpB4X6l9D6wNbn8Ee1NcnQOBb16U8Pjci9h24cVE\r\noDRAEJdae39ND4UFm4JAjiDfWO7cM0YtPkAAmtsY5ZWruReNVUsXJeco0fbIghuL\r\nhORaNIwEhw7zczpIDoQblNgaL7Tq4qpMPCf6hg+5KeoJEzQDlRBmLIrnFRTwCXpT\r\nDgWkOkbnsB1p4ebO/8RfD5sEmTIwiQHV2J71Ob6NMrBHbArZ79dyAdzuefQeRIhO\r\nLJEN4ipQLrwvjciJG9s48xEWrWrMNwT9AW+lWA==\r\n-----END CERTIFICATE REQUEST-----"
+                "SCDType": "REMOTE_SCD_APP_ANDROID"
+                "SCDRemoteId": "654C4DB3-3F68-4969-8ED2-80EA16B46EB0"
+                "SCDKeyId": 0
+                "pseudonym": "johndoe5766"
+                "requestTimestamp": "2023-03-20T09:12:28Z"
+        "required": true
+      "responses":
+        "200":
+          "description": "Certificate creation response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "certificateId":
+                    "type": "string"
+                    "example": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                    "description": "Id that is later used to send signature requests to a person"
+                  "pseudonym":
+                    "type": "string"
+                    "example": "johndoe5766"
+                    "description": "Unique pseudonym that can be used to lookup certificateId by external service. If not specified, will be created automatically."
+                  "certificate":
+                    "type": "string"
+                    "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "description": "X.509 certificate in PEM format"
+                  "responseTimestamp":
+                    "type": "string"
+                    "format": "date-time"
+                    "Description": "Timestamp in ISO 8601"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "OK"
+                          - "ERROR"
+                        "example": "OK"
+                        "description": "Certificate creation response"
+                      "message":
+                        "type": "string"
+                        "example": "Certificate generated successfully"
+                        "description": "Certificate creation message"
+                "example":
+                  "certificateId": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                  "pseudonym": "johndoe5766"
+                  "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                  "responseTimestamp": "2023-03-20T09:12:38Z"
+                  "status":
+                    "code": "OK"
+                    "message": "Certificate generated successfully"
+        "401":
+          "description": "ID BB Authentication required"
+        "403":
+          "description": "Payment required"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/cert/list":
+    "get":
+      "tags":
+        - "cert"
+      "summary": "Get list of all user certificates"
+      "description": "Get list of all user certificates"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "header"
+          "name": "X-GovStack-AuthenticationToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": true
+          "description": "JWT Authentication token received from ID BB"
+        -
+          "in": "query"
+          "name": "filter"
+          "schema":
+            "type": "string"
+            "enum":
+              - "ALL"
+              - "ACTIVATED"
+              - "EXPIRED"
+              - "REVOKED"
+              - "SUSPENDED"
+            "example": "ALL"
+          "required": false
+          "description": "Add filter condition"
+      "responses":
+        "200":
+          "description": "List certificates response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "array"
+                "items":
+                  "type": "object"
+                  "properties":
+                    "certificateId":
+                      "type": "string"
+                      "example": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                      "description": "Id that is later used to send signature requests to a person"
+                    "certificate":
+                      "type": "string"
+                      "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                      "description": "X.509 certificate in PEM format"
+                    "status":
+                      "type": "object"
+                      "properties":
+                        "code":
+                          "type": "string"
+                          "enum":
+                            - "ACTIVE"
+                            - "ERROR"
+                            - "EXPIRED"
+                            - "SUSPENDED"
+                            - "REVOKED"
+                          "example": "ACTIVE"
+                          "description": "Certificate status"
+                        "message":
+                          "type": "string"
+                          "example": "Certificate active"
+                          "description": "Certificate active"
+                "example":
+                  -
+                    "certificateId": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                    "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "status":
+                      "code": "ACTIVE"
+                      "message": "Certificate active"
+                  -
+                    "certificateId": "a92dba58903a6387aedee6f178d84de674e6a9b7d779a8e6add3db5f752ce5ab"
+                    "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "status":
+                      "code": "REVOKED"
+                      "message": "Certificate was revoked on 05.01.2023 because device was lost"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/cert/pseudonym":
+    "get":
+      "tags":
+        - "cert"
+      "summary": "Get single certificate"
+      "description": "Get single certificate"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "header"
+          "name": "X-Pseodonym-Token"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": true
+          "description": "JWT pseudonym token"
+      "responses":
+        "200":
+          "description": "Get certificate response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "certificateId":
+                    "type": "string"
+                    "example": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                    "description": "Id that is later used to send signature requests to a person"
+                  "certificate":
+                    "type": "string"
+                    "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "description": "X.509 certificate in PEM format"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "ACTIVE"
+                          - "ERROR"
+                          - "EXPIRED"
+                          - "SUSPENDED"
+                          - "REVOKED"
+                        "example": "ACTIVE"
+                        "description": "Certificate status"
+                      "message":
+                        "type": "string"
+                        "example": "Certificate active"
+                        "description": "Certificate active"
+                "example":
+                  "certificateId": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+                  "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                  "status":
+                    "code": "ACTIVE"
+                    "message": "Certificate active"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/cert/{certificateId}":
+    "patch":
+      "tags":
+        - "cert"
+      "summary": "Update certificate status"
+      "description": "Update certificate status"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "path"
+          "name": "certificateId"
+          "schema":
+            "type": "string"
+            "example": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+          "required": true
+          "description": "certificateId that indicates the certificate to be updated"
+        -
+          "in": "header"
+          "name": "X-GovStack-AuthenticationToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": true
+          "description": "JWT Authentication token received from ID BB"
+      "requestBody":
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "requestTimestamp":
+                  "type": "string"
+                  "format": "date-time"
+                  "Description": "Timestamp in ISO 8601"
+                "status":
+                  "type": "object"
+                  "properties":
+                    "code":
+                      "type": "string"
+                      "enum":
+                        - "ACTIVATE"
+                        - "SUSPEND"
+                        - "REVOKE"
+                      "example": "SUSPEND"
+                      "description": "Certificate status to be updated, Allowed transitionsACTIVE->SUSPENDED, ACTIVE->REVOKED, SUSPENDED->ACTIVE, SUSPENDED->REVOKED"
+                    "message":
+                      "type": "string"
+                      "example": "Certificate to be updated as suspended"
+                      "description": "Certificate update message"
+              "example":
+                "requestTimestamp": "2023-03-20T09:12:28Z"
+                "status":
+                  "code": "SUSPENDED"
+                  "message": "Certificate to be suspended because of user action"
+        "required": true
+      "responses":
+        "200":
+          "description": "Update certificate response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "responseTimestamp":
+                    "type": "string"
+                    "format": "date-time"
+                    "Description": "Timestamp in ISO 8601"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "ERROR"
+                          - "ACTIVATED"
+                          - "SUSPENDED"
+                          - "REVOKED"
+                          - "EXPIRED"
+                        "example": "SUSPENDED"
+                        "description": "Certificate status"
+                      "message":
+                        "type": "string"
+                        "example": "Certificate suspended"
+                        "description": "Certificate supended because of user action on 02.02.2023"
+                "example":
+                  "responseTimestamp": "2023-03-20T09:12:38Z"
+                  "status":
+                    "code": "SUSPENDED"
+                    "message": "Certificate supended because of user action on 02.02.2023"
+        "401":
+          "description": "ID BB Authentication required"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/sign/certificateId/{certificateId}":
+    "post":
+      "tags":
+        - "sign"
+      "summary": "Create a SCD eSignature using certificateId"
+      "description": "Use user's SCD (Signature Creation Device) to create an eSignature"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "path"
+          "name": "certificateId"
+          "schema":
+            "type": "string"
+            "example": "09440694c5c1798a23aad320abcd04b83f02f5ea12b8865df073d0e77ad5ae27"
+          "required": true
+          "description": "certificateId that indicates the certificate to be signed with"
+      "requestBody":
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "format":
+                  "type": "string"
+                  "enum":
+                    - "XAdES"
+                    - "CAdES"
+                    - "ASIC"
+                    - "JWS"
+                    - "PAdES"
+                  "example": "PAdES"
+                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                "hash":
+                  "type": "string"
+                  "description": "hash as byte array encoded in base64"
+                  "example": "53F4yGNsOXymuGL9JjF3/Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                "hashType":
+                  "type": "string"
+                  "enum":
+                    - "SHA2-256"
+                    - "SHA2-384"
+                    - "SHA2-512"
+                    - "SHA3-256"
+                    - "SHA3-384"
+                    - "SHA3-512"
+                    - "BLAKE2B"
+                  "example": "SHA2-256"
+                  "Description": "hash type used"
+                "dataToBeDisplayed":
+                  "type": "string"
+                  "example": "Please sign the consent form as requested (transactionId: 1234)"
+                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                "requestTimestamp":
+                  "type": "string"
+                  "format": "date-time"
+                  "Description": "Timestamp in ISO 8601"
+                  "example": "2023-03-20T09:12:28Z"
+        "required": true
+      "responses":
+        "200":
+          "description": "Signature response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "signature":
+                    "type": "string"
+                    "example": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                    "description": "signature in base64 format"
+                  "certificate":
+                    "type": "string"
+                    "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "description": "X.509 certificate in PEM format"
+                  "responseTimestamp":
+                    "type": "string"
+                    "format": "date-time"
+                    "Description": "Timestamp in ISO 8601"
+                    "example": "2023-03-20T09:12:38Z"
+                  "signatureTimestamp":
+                    "type": "string"
+                    "example": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                    "description": "rfc3161 asn.1 in base64"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "OK"
+                          - "ERROR"
+                        "example": "OK"
+                        "description": "Signature creation response"
+                      "message":
+                        "type": "string"
+                        "example": "Signature generated successfully"
+                        "description": "Signature creation message"
+                "example":
+                  "signature": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                  "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                  "signatureTimestamp": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                  "responseTimestamp": "2023-03-20T09:12:38Z"
+                  "status":
+                    "code": "OK"
+                    "message": "Signature generated successfully"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/sign/pseudonym":
+    "post":
+      "tags":
+        - "sign"
+      "summary": "Create a SCD eSignature using pseodunym"
+      "description": "Use user's SCD (Signature Creation Device) to create an eSignature"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "header"
+          "name": "X-Pseodonym-Token"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": false
+          "description": "JWT pseudonym token"
+      "requestBody":
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "format":
+                  "type": "string"
+                  "enum":
+                    - "XAdES"
+                    - "CAdES"
+                    - "ASIC"
+                    - "JWS"
+                    - "PAdES"
+                  "example": "PAdES"
+                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                "hash":
+                  "type": "string"
+                  "description": "hash as byte array encoded in base64"
+                  "example": "53F4yGNsOXymuGL9JjF3/Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                "hashType":
+                  "type": "string"
+                  "enum":
+                    - "SHA2-256"
+                    - "SHA2-384"
+                    - "SHA2-512"
+                    - "SHA3-256"
+                    - "SHA3-384"
+                    - "SHA3-512"
+                    - "BLAKE2B"
+                  "example": "SHA2-256"
+                  "Description": "hash type used"
+                "dataToBeDisplayed":
+                  "type": "string"
+                  "example": "Please sign the consent form as requested (transactionId: 1234)"
+                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                "requestTimestamp":
+                  "type": "string"
+                  "format": "date-time"
+                  "Description": "Timestamp in ISO 8601"
+                  "example": "2023-03-20T09:12:28Z"
+        "required": true
+      "responses":
+        "200":
+          "description": "Signature response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "signature":
+                    "type": "string"
+                    "example": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                    "description": "signature in base64 format"
+                  "certificate":
+                    "type": "string"
+                    "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "description": "X.509 certificate in PEM format"
+                  "responseTimestamp":
+                    "type": "string"
+                    "format": "date-time"
+                    "Description": "Timestamp in ISO 8601"
+                    "example": "2023-03-20T09:12:38Z"
+                  "signatureTimestamp":
+                    "type": "string"
+                    "example": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                    "description": "rfc3161 asn.1 in base64"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "OK"
+                          - "ERROR"
+                        "example": "OK"
+                        "description": "Signature creation response"
+                      "message":
+                        "type": "string"
+                        "example": "Signature generated successfully"
+                        "description": "Signature creation message"
+                "example":
+                  "signature": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                  "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                  "signatureTimestamp": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                  "responseTimestamp": "2023-03-20T09:12:38Z"
+                  "status":
+                    "code": "OK"
+                    "message": "Signature generated successfully"
+        "422":
+          "description": "Mandatory field not present"
+        "302":
+          "description": "Redirect to /sign/interactivePseudonym if X-Pseodonym-Token not present"
+          "headers":
+            "Location":
+              "schema":
+                "type": "string"
+                "format": "uri-reference"
+              "example": "https://esignaturebi/v1/sign/interactivePseudonym?format=PAdES&hash=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&hashType=SHA2-256&dataToBeDisplayed=SGVsbG8gV29ybGQ&requestTimestamp=2023-03-20T09%3A12%3A28Z&callbackUrl=http%3A%2F%2Fmysite%2F"
+  "/{version}/sign/interactivePseudonym":
+    "get":
+      "tags":
+        - "sign"
+      "summary": "Create a SCD eSignature with interactive pseodonym entry"
+      "description": "Provide interactive html for pseodonym entry form that will get the signature via sign/pseudonym and will call callbackUrl"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "query"
+          "name": "format"
+          "schema":
+            "type": "string"
+            "enum":
+              - "XAdES"
+              - "CAdES"
+              - "ASIC"
+              - "JWS"
+              - "PAdES"
+          "example": "PAdES"
+          "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+        -
+          "in": "query"
+          "name": "hash"
+          "schema":
+            "type": "string"
+            "format": "base64urlencoded"
+            "description": "hash as byte array encoded in base64"
+            "example": "AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA"
+        -
+          "in": "query"
+          "name": "hashType"
+          "schema":
+            "type": "string"
+            "enum":
+              - "SHA2-256"
+              - "SHA2-384"
+              - "SHA2-512"
+              - "SHA3-256"
+              - "SHA3-384"
+              - "SHA3-512"
+              - "BLAKE2B"
+            "example": "SHA2-256"
+            "Description": "hash type used"
+        -
+          "in": "query"
+          "name": "dataToBeDisplayed"
+          "schema":
+            "type": "string"
+            "format": "base64urlencoded"
+            "example": "UGxlYXNlIHNpZ24gdGhlIGNvbnNlbnQgZm9ybSBhcyByZXF1ZXN0ZWQgKHRyYW5zYWN0aW9uSWQ6MTIzNCk"
+            "Description": "Data to be displayed on users SCD (for ex transactionId)"
+        -
+          "in": "query"
+          "name": "requestTimestamp"
+          "schema":
+            "type": "string"
+            "format": "urlencoded"
+            "Description": "Timestamp in ISO 8601"
+            "example": "2023-03-20T09%3A12%3A28Z"
+        -
+          "in": "query"
+          "name": "callbackUrl"
+          "schema":
+            "type": "string"
+            "format": "urlencoded"
+            "description": "Callback url to be sent on signing response. Callback URL will have query parameters from SignatureResponse statusCode(base64urlencoded), statusMessage(base64urlencoded), signature (base64urlencoded), certificate (base64urlencoded), signatureTimestamp (base64urlencoded), responseTimestamp (urlencoded), pseudonymToken (jwt)"
+            "example": "https%3A%2F%2Fmysite"
+      "responses":
+        "200":
+          "description": "Returns html for entering pseudonym"
+          "content":
+            "text/html":
+              "schema":
+                "type": "string"
+        "422":
+          "description": "Mandatory field not present"
+  "/{version}/sign/onetime":
+    "post":
+      "tags":
+        - "sign"
+      "summary": "Create a one time eSignature"
+      "description": "Use one time Certificate and keys created on the fly to make an eSignature"
+      "parameters":
+        -
+          "in": "path"
+          "name": "version"
+          "schema":
+            "type": "string"
+            "example": "v1"
+          "required": true
+          "description": "API version"
+        -
+          "in": "header"
+          "name": "X-GovStack-AuthenticationToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": true
+          "description": "JWT Authentication token received from ID BB"
+        -
+          "in": "header"
+          "name": "X-GovStack-PaymentToken"
+          "schema":
+            "type": "string"
+            "example": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+          "required": false
+          "description": "JWT Authentication token received from Payment BB"
+      "requestBody":
+        "content":
+          "application/json":
+            "schema":
+              "type": "object"
+              "properties":
+                "format":
+                  "type": "string"
+                  "enum":
+                    - "XAdES"
+                    - "CAdES"
+                    - "ASIC"
+                    - "JWS"
+                    - "PAdES"
+                  "example": "PAdES"
+                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                "hash":
+                  "type": "string"
+                  "description": "hash as byte array encoded in base64"
+                  "example": "53F4yGNsOXymuGL9JjF3/Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                "hashType":
+                  "type": "string"
+                  "enum":
+                    - "SHA2-256"
+                    - "SHA2-384"
+                    - "SHA2-512"
+                    - "SHA3-256"
+                    - "SHA3-384"
+                    - "SHA3-512"
+                    - "BLAKE2B"
+                  "example": "SHA2-256"
+                  "Description": "hash type used"
+                "dataToBeDisplayed":
+                  "type": "string"
+                  "example": "Please sign the consent form as requested (transactionId: 1234)"
+                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                "requestTimestamp":
+                  "type": "string"
+                  "format": "date-time"
+                  "Description": "Timestamp in ISO 8601"
+                  "example": "2023-03-20T09:12:28Z"
+        "required": true
+      "responses":
+        "200":
+          "description": "Signature response"
+          "content":
+            "application/json":
+              "schema":
+                "type": "object"
+                "properties":
+                  "signature":
+                    "type": "string"
+                    "example": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                    "description": "signature in base64 format"
+                  "certificate":
+                    "type": "string"
+                    "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                    "description": "X.509 certificate in PEM format"
+                  "responseTimestamp":
+                    "type": "string"
+                    "format": "date-time"
+                    "Description": "Timestamp in ISO 8601"
+                    "example": "2023-03-20T09:12:38Z"
+                  "signatureTimestamp":
+                    "type": "string"
+                    "example": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                    "description": "rfc3161 asn.1 in base64"
+                  "status":
+                    "type": "object"
+                    "properties":
+                      "code":
+                        "type": "string"
+                        "enum":
+                          - "OK"
+                          - "ERROR"
+                        "example": "OK"
+                        "description": "Signature creation response"
+                      "message":
+                        "type": "string"
+                        "example": "Signature generated successfully"
+                        "description": "Signature creation message"
+                "example":
+                  "signature": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                  "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                  "signatureTimestamp": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                  "responseTimestamp": "2023-03-20T09:12:38Z"
+                  "status":
+                    "code": "OK"
+                    "message": "Signature generated successfully"
+        "401":
+          "description": "ID BB Authentication required"
+        "403":
+          "description": "Payment required"
+        "422":
+          "description": "Mandatory field not present"
+"components":
+  "requestBodies":
+    "signBody":
+      "content":
+        "application/json":
+          "schema":
+            "type": "object"
+            "properties":
+              "format":
+                "type": "string"
+                "enum":
+                  - "XAdES"
+                  - "CAdES"
+                  - "ASIC"
+                  - "JWS"
+                  - "PAdES"
+                "example": "PAdES"
+                "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+              "hash":
+                "type": "string"
+                "description": "hash as byte array encoded in base64"
+                "example": "53F4yGNsOXymuGL9JjF3/Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+              "hashType":
+                "type": "string"
+                "enum":
+                  - "SHA2-256"
+                  - "SHA2-384"
+                  - "SHA2-512"
+                  - "SHA3-256"
+                  - "SHA3-384"
+                  - "SHA3-512"
+                  - "BLAKE2B"
+                "example": "SHA2-256"
+                "Description": "hash type used"
+              "dataToBeDisplayed":
+                "type": "string"
+                "example": "Please sign the consent form as requested (transactionId: 1234)"
+                "Description": "Data to be displayed on users SCD (for ex transactionId)"
+              "requestTimestamp":
+                "type": "string"
+                "format": "date-time"
+                "Description": "Timestamp in ISO 8601"
+                "example": "2023-03-20T09:12:28Z"
+      "required": true
+  "responses":
+    "signResponse":
+      "description": "Signature response"
+      "content":
+        "application/json":
+          "schema":
+            "type": "object"
+            "properties":
+              "signature":
+                "type": "string"
+                "example": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+                "description": "signature in base64 format"
+              "certificate":
+                "type": "string"
+                "example": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+                "description": "X.509 certificate in PEM format"
+              "responseTimestamp":
+                "type": "string"
+                "format": "date-time"
+                "Description": "Timestamp in ISO 8601"
+                "example": "2023-03-20T09:12:38Z"
+              "signatureTimestamp":
+                "type": "string"
+                "example": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+                "description": "rfc3161 asn.1 in base64"
+              "status":
+                "type": "object"
+                "properties":
+                  "code":
+                    "type": "string"
+                    "enum":
+                      - "OK"
+                      - "ERROR"
+                    "example": "OK"
+                    "description": "Signature creation response"
+                  "message":
+                    "type": "string"
+                    "example": "Signature generated successfully"
+                    "description": "Signature creation message"
+            "example":
+              "signature": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
+              "certificate": "-----BEGIN CERTIFICATE-----\r\nMIIDfDCCAmSgAwIBAgIQaSg0J93/hMMyFZ/DNEDM3DANBgkqhkiG9w0BAQsFADAp\r\nMScwJQYDVQQDDB5CLkVzdCBTb2x1dGlvbnMgU2lnbmluZyBQb3J0YWwwHhcNMjMw\r\nNDE0MTAzOTA5WhcNMjUwNzE3MTAzOTA5WjATMREwDwYDVQQDDAhKb2huIERvZTCC\r\nASIwDQYJKoZIhvcNAQEBBQADggEPADCCAQoCggEBANU2fYwu2tz/D4GpTZZhPn4g\r\nFTH4TSbez1Ux9eMsmklYrmqdr3bBzJ4k8I1wkOBioxrXnH/s4zq7I1dJCbAsAzpd\r\niK8IBHo5XxwX2Num+HxRdU+nTOtfa4MZTGnvf4ZzLYBEK1lIsXQxAbMkPu4cBH8t\r\n9ir72GGU2qM/iMOv25eA75+cmNFj+02DohgpxXhErnZB/9mY+8oLvIFM5traf92U\r\nF4OPsepQYpJUM4u2prxbdcwVCmZ70FielcykaG7u84PRKbmAA50x2UQgsksThmxA\r\nPJlIvEoCS4BAAoLlY+ti0IFhThqYjG+FcRR5R48wa+oAJBquDG1eko6dTzp3BdEC\r\nAwEAAaOBtTCBsjAJBgNVHRMEAjAAMB0GA1UdDgQWBBR68RAciltftWZW4pAxqMQ0\r\nhigSEzBkBgNVHSMEXTBbgBRYpaezWi0heg09El0UypLU81uA4KEtpCswKTEnMCUG\r\nA1UEAwweQi5Fc3QgU29sdXRpb25zIFNpZ25pbmcgUG9ydGFsghQZ+B3m7iBv8Daf\r\nWiIkRB5NbVbQsTATBgNVHSUEDDAKBggrBgEFBQcDAjALBgNVHQ8EBAMCB4AwDQYJ\r\nKoZIhvcNAQELBQADggEBAI+5OAffnf3sn/jN58idSLUC09vWc6KPEzfZ2QLhDftq\r\nAfwSquItYFFuuQNh/x93HSprglDwL3U6sqRq0owMSSXXcLctVQr/MTEXyiRmQjUT\r\nHykwS/ovSw93E6VRnrF0qnaf6qOOAi0FfLxCV/1p3aEQBt7f/krZaW4Y33XrKi5F\r\nNnMhqQLtgZy9xXR0dNQ0ZKorEIptUrcujT8aRlEN4oqE7oo4j41TsksBQgEFfIeg\r\nljS6baoEko6n5ozyFzfeDWzd0yTzviXmUZGzOt1ZLFbd5In5+LX4Z0QwzhUA+uyt\r\nCu17qrRiPt2JzALHjbkdV3OB5sbOSZDHl3aUuqll6Dg=\r\n-----END CERTIFICATE-----"
+              "signatureTimestamp": "r/PzWEEgXyubXH/GCG6fLADU9Rz4e3b0KdZuNwfX/xk="
+              "responseTimestamp": "2023-03-20T09:12:38Z"
+              "status":
+                "code": "OK"
+                "message": "Signature generated successfully"

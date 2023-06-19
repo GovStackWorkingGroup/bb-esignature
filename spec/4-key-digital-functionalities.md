@@ -29,6 +29,26 @@ eSignature building block provides the following key functionalities.
 * [JWS](https://www.rfc-editor.org/rfc/rfc7515)&#x20;
 * [PAdES](https://www.iso.org/standard/67937.html)
 
+## 4.1  Capture digital Signature for a document
+
+describe this kdf and its sub-topics such as&#x20;
+
+4.1.1 one-time signature: meanw what? what shouldbe considered as functional requirements to create this kdf in this bb?
+
+4.1.2 scd based signature
+
+
+
+
+
+4.2   verify signature for a document
+
+4.3 get signature
+
+4.4 delete signature
+
+4.5 update signature
+
 ## 4.2 One-Time Signature:
 
 One-time signatures are one of the easiest ways to get large-scale adoption of eSignatures. This approach does not require any device to be owned by the end user.  This approach relies on the work done by the ID Building block to authenticate an end user.&#x20;

@@ -1,20 +1,21 @@
 # 5 Cross-Cutting Requirements
 
-{% hint style="success" %}
-The Cross-cutting requirements described in this section are an extension of the cross-cutting requirements defined in the architecture blueprint and nonfunctional requirements document. This section will describe any additional cross-cutting requirements that apply to this building block, or any requirements that are defined in the non-functional requirements document that are NOT applicable to this Building Block.
+## 5.1 HSM Compliance (REQUIRED)
 
-Cross-cutting requirements will use the same language (REQUIRED, RECOMMENDED or OPTIONAL) as specified in the architecture document.
-{% endhint %}
+HSM MUST be compliant to a minimum of FIPS 140-2 Level 3. This guarantees the protection of private keys. HSM/Key Management application shall not print any information about the end-use details. Keys should be created only within the HSM.&#x20;
 
-_\<Example Cross-Cutting Requirements>_
+## 5.2 Key Deletion (REQUIRED)
 
-## 5.1 Personal data must be kept private (REQUIRED)
+Keys created during One Time Signature should be deleted as soon as the signature process is over. Logs SHOULD be kept in a database of the details of the deletion. Logs MUST include timestamps and identify the user and affiliation that performed the transaction.
 
-Personal data MUST be kept private and never shared with any parties, except where specific authorisation has been granted. The Consent BB shall follow the privacy principles as laid out in the Govstack architecture.
+## 5.3 Audit (REQUIRED)
 
-## 5.2 All transactions must be Audit Logged (RECOMMENDED)
+All audit logs SHALL be integrity protected against tampering. The Consent BB shall follow the data policy and audit logging requirements as laid out in the Govstack architecture.
 
-Logs SHOULD be kept in a database of all created, updated, or deleted records. Logs MUST include timestamps and identify the user and affiliation that performed the transaction.
+## 5.4 SCD Compliance (REQUIRED)
 
-All audit logs shall be integrity protected against tampering. The Consent BB shall follow the data policy and audit logging requirements as laid out in the Govstack architecture.
+The SCD SHOULD be qualified with at least one of the following FIPS 14-2 Level 3 or Annex II of [Regulation (EU) No 910/2014 (eIDAS)](https://en.wikipedia.org/wiki/EIDAS) or equivalent common criteria certification.
 
+## 5.5 Privacy (OPTIONAL)
+
+Signing using a single key can compromise the user's privacy in the longer run. Privacy-preserving techniques can be used in the signature schemes to protect the user's privacy.

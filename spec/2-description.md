@@ -57,6 +57,7 @@ SCD based approach
 ### 2.1.2 Services should be able to&#x20;
 
 * sign digital document in desired eSignature format
+* verification?
 
 ### 2.1.3 eSignature library
 
@@ -67,15 +68,7 @@ This library will help to
 * get digital document digest to be sent to eSignature BB. This step is used because of keeping storage requirements of eSignature BB low and avoid privacy concents
 * embed received eSignature back into document and return standards based and validatable digital document with eSignature
 
-### 2.1.4 eSignature formats
-
-Add support for the following signature formats:
-
-* XAdES -  XML signatures
-* PAdES - PDF signatures
-* CAdES - CMS Signatures
-* ASIC - Interoperable signatures
-* JWS (RFC 7515)
+###
 
 ### 2.1.5 Authentication and security
 

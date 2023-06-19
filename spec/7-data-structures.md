@@ -19,9 +19,21 @@ For each data model, the following information should be provided:
 **Resource Model:** This section may also include a resource model diagram which shows the relationship between data objects that are used by this Building Block.
 {% endhint %}
 
-_\<Example Data Elements>_
+_\<Example Data Elem_
 
-## 7.1 WorkList Data Structure:  <a href="#worklist-data-structure" id="worklist-data-structure"></a>
+### 2.1.4 eSignature formats
+
+Add support for the following signature formats:
+
+* XAdES -  XML signatures
+* PAdES - PDF signatures
+* CAdES - CMS Signatures
+* ASIC - Interoperable signatures
+* JWS (RFC 7515)
+
+_ents>_
+
+## 7.1 WorkList Data Structure: <a href="#worklist-data-structure" id="worklist-data-structure"></a>
 
 **Description:** The WorkList data structure is used to track a list of subscribers to a particular session or event.
 
@@ -40,8 +52,6 @@ _\<Example Data Elements>_
 
 _Note: Recommend using_ [_https://app.diagrams.net/_](https://app.diagrams.net/) _to create the resource model and store in BuildingBlock repository_
 
-&#x20;_\<Example Resource Model>_
+_\<Example Resource Model>_
 
 <figure><img src="https://files.gitbook.com/v0/b/gitbook-x-prod.appspot.com/o/spaces%2FzdXe8NbIMZIv5sydPBf6%2Fuploads%2Fgit-blob-736cd906cff209af7113b298653cb11a8b5935b6%2Fdata-structures.png?alt=media" alt=""><figcaption></figcaption></figure>
-
-&#x20;

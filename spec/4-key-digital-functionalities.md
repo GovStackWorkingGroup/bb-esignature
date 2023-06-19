@@ -21,13 +21,15 @@ eSignature building block provides the following key functionalities.
   1. Ability to configure the system without intervening with the signature process.
   2. No APIs are provided for administrative needs.
 
-## 4.1 Supported Formats
+### 2.1.4 eSignature formats
 
-* [XAdES](https://www.w3.org/TR/XAdES/)&#x20;
-* [CAdES](https://www.rfc-editor.org/rfc/rfc5126)&#x20;
-* [ASIC](https://www.etsi.org/deliver/etsi\_en/319100\_319199/31916201/01.01.01\_60/en\_31916201v010101p.pdf)&#x20;
-* [JWS](https://www.rfc-editor.org/rfc/rfc7515)&#x20;
-* [PAdES](https://www.iso.org/standard/67937.html)
+Add support for the following signature formats:
+
+* XAdES -  XML signatures
+* PAdES - PDF signatures
+* CAdES - CMS Signatures
+* ASIC - Interoperable signatures
+* JWS (RFC 7515)
 
 ## 4.1  Capture digital Signature for a document
 

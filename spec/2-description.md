@@ -33,19 +33,55 @@ The current scope is to solve the following&#x20;
 
 ## 2.2 eSignature Lifecycle
 
-There are two lifecycles available for the eSignature building block. Both the mechanism has its own unique advantages. Its recommended to follow both approaches for better inclusivity&#x20;
+There are two lifecycle available for the eSignature building block. Both the mechanism has its own unique advantages. Its recommended to follow both approaches for an inclusive approach&#x20;
 
-Lifecyle Approach 1
+### 2.2.1 One Time Signature Approach
 
-\<Attach a simple diagram>
+One-time signatures are one of the easiest ways to get large-scale adoption of eSignatures. This approach does not require any device to be owned by the end user.  This approach relies on the work done by the ID Building block to authenticate an end user.
 
-In the above approach, we have assumed that everyone ...
+<figure><img src=".gitbook/assets/LifeCycle1.jpg" alt=""><figcaption><p>One Time Signature</p></figcaption></figure>
 
-Lifecyle Approach 2
+* User authenticates against the ID BB
+* The user is redirected to the eSignatures BB
+* A new key pair is created in the HSM (Hardware Security Module)
+* An X509 Certificate is issued with the details from the ID Building block (Name, Age, Gender, Location)&#x20;
+* The new key is used to timestamp & sign the document.
+* The X509 certificate is set to expire 1 minute from the time of creation. &#x20;
+* The Signed document is sent.&#x20;
+* The private key is deleted from the HSM.
 
-\<Attach a simple diagram>
+### 2.2.2 SCD based approach
 
-SCD based approach
+The SCD (Signature Creation Device) is a personal device of the user. It could be a Mobile Phone, Sim Card, Smart Card, Secure SD Card, USB Storage device, NFC Card etc. The SCD device can be used to store the keys for long-term usage. This allows the user to interact with ID BB once and create a key on the SCD. This key then can be used for signing any document without interacting with the ID Building block.
+
+<div data-full-width="true">
+
+<figure><img src=".gitbook/assets/Onboard.jpg" alt=""><figcaption><p>SCD Onboard</p></figcaption></figure>
+
+</div>
+
+The binding of the private key with the user is called Onboarding. In this process, a user is authenticated and his key is created on the SCD.&#x20;
+
+* User authenticates against the ID BB
+* The user is redirected to the eSignature page where his SCD device is detected.
+* The user is asked to select a valid SCD device and enter its security PIN/Biometric/OTP.
+* The eSignature BB interacts with the SCD (Protocols are left open for implementation) to create a  Key Pair.
+* A CSR (Certificate Signing Request) is created&#x20;
+* This request is sent to the eSignature building block.
+* The building block verified the ID BB token and the data in the CSR.
+* If they match then the CSR is converted to an X509 certificate and the same is issued back to the device.
+
+<figure><img src=".gitbook/assets/SCDSign.jpg" alt=""><figcaption><p>SCD Based Signature</p></figcaption></figure>
+
+The key created on the SCD device can be used by the user to digitally sign any of the documents.
+
+* The Third-Party who needs to sign the document will redirect to the eSignature building block.
+* The eSignature BB will ask for the pseudonym (his eSignature handle) from the user.
+* The user provides the pseudonym to the eSignature BB.
+* The eSignature BB sends a notification to the SCD (Internal Protocol)
+* The user is shown with his choice to sign or not to sign.
+* Once the user signs the SCD will send the signature to the Third-Party.
+* The eSignature will then be attached to the given document in one of the supported formats.
 
 ### 2.1.1 Users should be able to
 

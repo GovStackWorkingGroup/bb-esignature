@@ -1,110 +1,38 @@
 # 4 Key Digital Functionalities
 
-eSignature building block provides the following key functionalities.
+To facilitate eSignature service as described in section 2, the  building block MUST have specific key digital functionalities.&#x20;
 
-* User
-  1. Digitally sign the documents (PDF, Word, Excell, JSON, XML, Image)
-  2. Use a personal device to store the keys safely.
-  3. Ability to sign the document where the user has no device.&#x20;
-  4. Ability to sign a document without the involvement of ID BB
-  5. Ability to sign a document only the ID issued by the ID building block
-* Third-party
-  1. API to invoke eSignatures
-  2. Trust users from the ID Building block
-  3. Allows safe async way to obtain signatures
-  4. A simple-to-use library to validate the signature.
-* Auditor
-  1. API to retrieve specific audit data.
-  2. API to validate and get signatures on any audit data.
-  3. Cryptographic audits and guidelines should be followed for auditing of key secruity
-* Administrator
-  1. Ability to configure the system without intervening with the signature process.
-  2. No APIs are provided for administrative needs.
+## 4.1 HSM:
 
-### 2.1.4 eSignature formats
+The Hardware Security Module is an integral part of the eSignatures BB. The HSM ensures the protection of a key with utmost safety. Without a HSM the key can potentially fall in wrong hands and could result in huge mistrust. All keys used in our one time signatures are  created, used and destroyed within the HSM. The HSM should be configured with FIPS 140-2 Level 3.&#x20;
 
-Add support for the following signature formats:
+## 4.2 SCD:
 
-* XAdES -  XML signatures
-* PAdES - PDF signatures
-* CAdES - CMS Signatures
-* ASIC - Interoperable signatures
-* JWS (RFC 7515)
+The SCD is the component where the users private key would be stored. The SCD could be a Smart card, Mobile App, Sim card App or equivalent. The SCD interacts with the eSignature BB using its own internal protocol. Every eSignature BB will support one or many such SCD. Most of the SCD would be protected with a secure PIN/Biometrics.
 
-## 4.1  Capture digital Signature for a document
+## 4.3 Timestamp:
 
-describe this kdf and its sub-topics such as&#x20;
+Time of a sign is an important part of the signature. Without a proper time of the signature we can never trust the signature, as one can not find if the signature happened before its expiry or after expiry. Most often this functionality is provided by the timestamping server hosted by the CA.
 
-4.1.1 one-time signature: meanw what? what shouldbe considered as functional requirements to create this kdf in this bb?
+## 4.4 One Time Signing Service:
 
-4.1.2 scd based signature
+This is one of the key functionality in eSignatures. This service is responsible to provide the One Time Signature API and interact with the HSM. This service validates the user against the Authorization Building Block.  A valid user is allowed to create a key in HSM and sign it.  Every key created here will also need a X509 certificate. The certificate management module will publish this created X509 certificate. &#x20;
 
+## 4.5 SCD On-Boarding:
 
+SCD On-Boarding is the module responsible for the binding of the SCD & User. The module interacts with the Identity BB and would validate the user's precense before issuing the Certificate. This module is responsible to talk to the SCD for all types of key management & administrative needs. This module is hosted on a server and would ensure to maintain clear audit records and KYC records.
 
+## 4.6 SCD Signing:
 
+The SCD Signing is one of the key functionality of eSignatures BB. When a user holds his key in a SCD then this module is responsible to interact with the SCD to sign any required document. This module works in a asynchronous mode. A signature is requested on demand using the API. But the module interacts with the SCD asynchronously.  The module is responsible to connect to SCD for all signing purposes.&#x20;
 
-4.2   verify signature for a document
+## 4.7 Certificate Management:
 
-4.3 get signature
+All certificates that are created within the One Time Signature Module or in SCD  will be hosted in this module. The modules lets everyone to have their X509 public certificate hosted for any verification. The module should have an administrative ability to let people revoke the keys on demand. The module has to maintain the OCSP & CRL based revocations.&#x20;
 
-4.4 delete signature
+## 4.8 Notification:&#x20;
 
-4.5 update signature
+This module is responsible to notify the SCD device when a signature is needed. This helps the SCD to alert the user. The user can look through the notification and accept to sign the document. The module is also responsible for notification of a signature to the user's mobile phone/email/SCD. The notification to the user can be used as a audit record by the user.
 
-## 4.2 One-Time Signature:
+##
 
-The various actors and their activities described in section 2 must be supported by a set of non-redundant, Key Digital Functionalities listed below:
-
-capture digital signature:  this gfdkff
-
-There may be two scenarios of digital signal capture (1) one-time-signatures (2) scd-based signature.....
-
-verify digital signature
-
-
-
-## 4.2 One-Time Signature:
-
-One-time signatures are one of the easiest ways to get large-scale adoption of eSignatures. This approach does not require any device to be owned by the end user.  This approach relies on the work done by the ID Building block to authenticate an end user.&#x20;
-
-* User authenticates against the ID BB
-* The user is redirected to the eSignatures BB
-* A new key pair is created in the HSM (Hardware Security Module)
-* An X509 Certificate is issued with the details from the ID Building block (Name, Age, Gender, Location)&#x20;
-* The new key is used to timestamp & sign the document.
-* The X509 certificate is set to expire 1 minute from the time of creation. &#x20;
-* The Signed document is sent.&#x20;
-* The private key is deleted from the HSM.
-
-This approach works well for users who do not have handheld devices or cards. There is fewer logistics and solves the problem inclusively.&#x20;
-
-## 4.2 SCD-based Signature:&#x20;
-
-The SCD (Signature Creation Device) is a personal device of the user. It could be a Mobile Phone, Sim Card, Smart Card, Secure SD Card, USB Storage device, NFC Card etc. The SCD device can be used to store the keys for long-term usage. This allows the user to interact with ID BB once and create a key on the SCD. This key then can be used for signing any document without interacting with the ID Building block.&#x20;
-
-### 4.2.1 Onboarding
-
-The binding of the private key with the user is called Onboarding. In this process, a user is authenticated and his key is created on the SCD.&#x20;
-
-* User authenticates against the ID BB
-* The user is redirected to the eSignature page where his SCD device is detected.
-* The user is asked to select a valid SCD device and enter its security PIN/Biometric/OTP.
-* The eSignature BB interacts with the SCD (Protocols are left open for implementation) to create a  Key Pair.
-* A CSR (Certificate Signing Request) is created&#x20;
-* This request is sent to the eSignature building block.
-* The building block verified the ID BB token and the data in the CSR.
-* If they match then the CSR is converted to an X509 certificate and the same is issued back to the device.
-
-This completed the Onboarding process and now the Key for signing the request stays on the SCD.
-
-### 4.2.2 Usage
-
-The key created on the SCD device can be used by the user to digitally sign any of the documents.
-
-* The Third-Party who needs to sign the document will redirect to the eSignature building block.
-* The eSignature BB will ask for the pseudonym (his eSignature handle) from the user.
-* The user provides the pseudonym to the eSignature BB.
-* The eSignature BB sends a notification to the SCD (Internal Protocol)
-* The user is shown with his choice to sign or not to sign.
-* Once the user signs the SCD will send the signature to the Third-Party.
-* The eSignature will then be attached to the given document in one of the supported formats.

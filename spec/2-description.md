@@ -10,7 +10,7 @@ eSignature provides a huge advantage over handwritten signatures. They can be us
 
 * Submitting applications to Government agencies (Child care, Residence Registration, Marrying, etc)
 * Purchase and use banking services (Making transfers, Adding transfer limits, Applying for loans)
-* Purchasing telecom services (Purchase SIM/eSIM, Change contract, Add TV subscription)
+* Purchasing telecom services (Purchase SIM / eSIM, Change contract, Add TV subscription)
 * Purchase Utility services (new contract for electricity, gas)
 * Purchase insurance contract
 
@@ -60,11 +60,11 @@ The SCD (Signature Creation Device) is a personal device of the user. It could b
 
 </div>
 
-The binding of the private key with the user is called Onboarding. In this process, a user is authenticated and his key is created on the SCD.&#x20;
+The binding of the private key with the user is called On-boarding. In this process, a user is authenticated and his key is created on the SCD.&#x20;
 
 * User authenticates against the ID BB
 * The user is redirected to the eSignature page where his SCD device is detected.
-* The user is asked to select a valid SCD device and enter its security PIN/Biometric/OTP.
+* The user is asked to select a valid SCD device and enter its security PIN / Biometric / OTP.
 * The eSignature BB interacts with the SCD (Protocols are left open for implementation) to create a  Key Pair.
 * A CSR (Certificate Signing Request) is created&#x20;
 * This request is sent to the eSignature building block.
@@ -89,7 +89,7 @@ The key created on the SCD device can be used by the user to digitally sign any 
 * Register the user's Signature Creation Device (SCD)&#x20;
 * Confirm the signature with PIN code on the user's SCD&#x20;
 * View user's SCD-s and certificates
-* Digitally sign the documents (PDF, Word, Excell, JSON, XML, Image)
+* Digitally sign the documents (PDF, Word, Excel, JSON, XML, Image)
 * Use a personal device to store the keys safely.
 * Ability to sign the document where the user has no device.&#x20;
 * Ability to sign a document without the involvement of ID BB
@@ -118,12 +118,10 @@ The key created on the SCD device can be used by the user to digitally sign any 
 
 ## 2.3 eSignature library
 
-eSignature BB will provide a helper library for the Services to use the BB.
+eSignature BB will provide a helper library for the Services. The helper library could be used to integrate eSignatures faster.&#x20;
 
-This library will help to
-
-* Get digital document digest to be sent to eSignature BB. This step is used because of keeping storage requirements of eSignature BB low and to avoid privacy concerns
-* Embedding received eSignature back into the document and validate digital documents with eSignature
+* Get digital document digest to be sent to eSignature BB.  Obtaining just the hash reduces the storage overhead and also avoids the privacy concern of sending the original document.
+* Embedding received eSignature back into the document and validate digital documents with eSignature.
 
 ## 2.4 eSignature formats
 
@@ -140,8 +138,8 @@ Supports the following signature formats:
 In order for eSignatures to be secure and adhere to privacy regulations the eSignature BB uses the following levels of authentication
 
 * Authentication via ID BB - The service that uses eSignature will have to authenticate the user against ID BB.
-* Unique pseudonym - The service is redirected to a webpage where the user can enter a unique pseudonym known to the user only to start the signing process
-* Asking for PIN code on the user's device - Signature BB will send a request to the user's device so that the user can confirm the signing request with a PIN code
+* Unique pseudonym - The service is redirected to a webpage on eSignature portal where the user can enter a unique pseudonym known only to the user to start the signing process. Of-course without a pin the signing will not be complete.
+* Asking for PIN code on the user's device - eSignature BB will send a request to the user's device so that the user can confirm the signing request with a PIN.
 * The signature will be returned using an internal API protected by the Information Mediation Block
 
 ## 2.6 Audit Trail and Compliance

@@ -30,6 +30,8 @@ The current scope is to solve the following&#x20;
 * Services - 3rd party internet services that require user eSignature to provide the service
 * Auditor - Individual or Organization that reviews the platform for any misuse(Intentional & Unintentional)
 * Administrator - Individual Or Team that configures the eSignature building block.&#x20;
+* Certification Authority - A certification authority who can issue a certificate as X509.
+* Timestamp Authority - Trusted thirdparty who can issue a certified time.&#x20;
 
 ## 2.2 eSignature Lifecycle
 

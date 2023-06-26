@@ -1,57 +1,99 @@
 # 9 Internal Workflows
 
-{% hint style="success" %}
-This section describes standard _internal_ workflows that a building block should support. Each internal workflow must be linked to one of the Functional Requirements defined in section 6.
+### 9.1 Workflow for onetime signing
 
-An internal workflow describes the internal processes that a Building Block needs to execute to complete a request from an external application or Building Block to fulfull the functional requirement
-{% endhint %}
+This internal workflow is used by the eSignature BB to give onetime signature.
 
-_\<Example Internal Workflows>_
+Workflow is kicked off by a 3rd party using eSignature client library to get a digest of document to be signed
 
-### 9.1 Start a workflow process via API.&#x20;
+After submitting the call to eSignature BB, it will first check if the authentication token by ID BB is valid
 
-This internal workflow is used by the Workflow Building Block to initiate a workflow process. An external application (Building Block) calls an API in the Workflow Building Block which will launch a workflow process. This functional requirement must also support submission of data payload through variables in the same API call.
+If required by the BB configuration, it will also check if the Payment token supplied by the request is valid.
 
-Examples:&#x20;
+Then a Host Security Module (HSM) hardware is used to generate a temporary keypair. From that keypair, public part is exported as Certificate Signing Request (CSR)
 
-* [PostPartum and Infant Care Use Case, Payment Step](https://govstack-global.atlassian.net/wiki/spaces/GH/pages/49381394/PostPartum-01-Example+Implementation+Original+-+multiple+steps): Validate the mother has completed all steps (visited a pediatrician, procured medicine and nutrition supplies, and visited the therapy center) by connecting to MCTS registry
-* [Unconditional Social Cash Transfer, Elibility Determination](https://govstack.gitbook.io/product-use-cases/product-use-case/inst-1-unconditional-social-cash-transfer): Send beneficiary data from Registration BB to Workflow BB
+CSR is the submitted to a CA instance that will generate and publish a short lived (1 minute) certificate based on supplied CA.
 
-```mermaid
-sequenceDiagram
+After certificate has been created the private key in HSM is used to sign a document digest.
 
-External BB-->>Workflow BB: Call API to start workflow process
-Workflow BB-->>Workflow BB: Launch process
-Workflow BB-->>External BB: Return Process ID
+After Digest is signed, timestamp is requested on the signature from timestamping service.
 
-```
-
-
-
-### 9.2 Booking an appointment&#x20;
-
-The first and somewhat unique use-case is related to the need for consent when the Individual is not yet provisioned in the System processing the data. In such cases, the workflow requires the creation of a valid and trusted Foundational ID to be linked with the Consent Record. Below is shown how a pre-registration use of consent workflow works.
-
-Examples:&#x20;
-
-* Postpartum Use Case, Appointment scheduling step: In this case, a health care worker will book an appointment into a specific slot. The Scheduler Building Block will leverage the Messaging Building Block to send a message to the patient with an appointment confirmation.
+After receiving timestamp original 3rd party replied with signature response.
 
 ```mermaid
 sequenceDiagram
+    activate ID BB
+    activate Registration&UI BB
+    Note right of Registration&UI BB: Get document hash with client side library
+    Registration&UI BB->>e-Signature BB: Sign hash with Access token
+    activate e-Signature BB
+    e-Signature BB->>ID BB: Invoke introspect API with Access token
+    ID BB-->>e-Signature BB: user details, user PSUT
+    deactivate ID BB
+    alt One time Key
+    e-Signature BB->>HSM: Create key with user data
+    activate HSM
+    HSM-->>e-Signature BB: CSR
+    e-Signature BB->>CA: Create certificate with CSR & publish
+    activate CA
+    CA-->>e-Signature BB: Certificate
+    deactivate CA
+    e-Signature BB-->>HSM: Sign with key & delete
+    HSM-->>e-Signature BB: signature
+    deactivate HSM
+    end
+    e-Signature BB->>CA: Get timestamp
+    activate CA
+    CA-->>e-Signature BB: Timestamp
+    deactivate CA
+    e-Signature BB-->>Registration&UI BB: Signature with timestamp
+    deactivate e-Signature BB
+    Note right of Registration&UI BB: Merge signature using client side library
+    deactivate Registration&UI BB
 
-HCworker->>PPCP_APP: Request appointment<br />for consultation session<br /> with preferences<br />(date-time range,\nclinics, doctors,etc)
-PPCP_APP->>Scheduler [planner]: Find unbooked session<br />slots in consultation event<br />for given preferrences
-Scheduler [planner]->>PPCP_APP: Report available<br />session slots\n with terms of service
-opt: 
-    HCworker ->>PPCP_APP:Pay fee, if any
-    PPCP_APP->HCworker:payment receipt 
-end
-HCworker->>PPCP_APP:Confirm slot 
-PPCP_APP->>Scheduler [planner]: Book appointment<br />for consultation session 
-Scheduler [planner]->>Scheduler [Worklist]: Update in<br />consultant's worklist
-Scheduler [planner]->>PPCP_APP:Confirm booking of \n appointment
-PPCP_APP->>HCworker:Publish booking details 
-Scheduler [planner]->>Messaging BB: Appointment confirmation message
-Messaging BB->>Subscriber: Deliver message \n to Subscriber
-Messaging BB->>Scheduler [planner]: delivery confirmation
 ```
+
+### 9.2 Workflows for signing with user's device
+
+In case of signing with user's device there are multiple workflows
+
+* Register user's Signature Creation Device (SCD)
+* Signing with user's Signature Creation Device (SCD)
+
+#### 9.2.1 Register user's Signature Creation Device (SCD)
+
+Registering start with Mother authenticating against ID BB and getting the authentication token.
+
+After user is authenticated, a Remote SCD service is called to onboard user.
+
+There is a request sent to user's device to create keys.
+
+After keys are generated the public part of keypair is sent to eSignature BB as a Certificate Signing Request (CSR).
+
+CSR is the submitted to a CA instance that will generate and publish a certificate based on supplied CA.
+
+```mermaid
+sequenceDiagram
+    actor Mother
+    Mother->>ID BB: Authenticate with e-signature scope
+    activate ID BB
+    ID BB-->>Mother: Access token
+    Mother->>e-Signature BB: Provide authentication token
+    activate e-Signature BB
+    e-Signature BB->>ID BB: Invoke introspect API with Access token
+    ID BB-->>e-Signature BB: user details, user PSUT
+    deactivate ID BB
+    alt Remote QSCD onboarding
+    e-Signature BB->>Remote QSCD Service: onboard user
+    activate Remote QSCD Service
+    Remote QSCD Service->>Mother: Accept key creation, choose PIN
+    Mother-->>Remote QSCD Service: Acceptance
+    Note right of Mother: Mother accepts key creation and choose PIN with a mobile device
+    Remote QSCD Service->>e-Signature BB: OK
+    deactivate Remote QSCD Service
+    end
+    e-Signature BB-->>Mother: QSCD Onboarded
+    deactivate e-Signature BB
+
+```
+

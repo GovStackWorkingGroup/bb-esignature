@@ -42,10 +42,10 @@ sequenceDiagram
     HSM-->>e-Signature BB: signature
     deactivate HSM
     end
-    e-Signature BB->>CA: Get timestamp
-    activate CA
-    CA-->>e-Signature BB: Timestamp
-    deactivate CA
+    e-Signature BB->>TSA: Get timestamp for signature
+    activate TSA
+    TSA-->>e-Signature BB: Timestamp rfc3161
+    deactivate TSA
     e-Signature BB-->>Registration&UI BB: Signature with timestamp
     deactivate e-Signature BB
     Note right of Registration&UI BB: Merge signature using client side library
@@ -74,26 +74,49 @@ CSR is the submitted to a CA instance that will generate and publish a certifica
 
 ```mermaid
 sequenceDiagram
-    actor Mother
-    Mother->>ID BB: Authenticate with e-signature scope
+    actor User
+    User->>ID BB: Authenticate with e-signature scope
     activate ID BB
-    ID BB-->>Mother: Access token
-    Mother->>e-Signature BB: Provide authentication token
+    ID BB-->>User: Access token
+    User->>e-Signature BB: Provide authentication token
     activate e-Signature BB
     e-Signature BB->>ID BB: Invoke introspect API with Access token
     ID BB-->>e-Signature BB: user details, user PSUT
     deactivate ID BB
-    alt Remote QSCD onboarding
-    e-Signature BB->>Remote QSCD Service: onboard user
-    activate Remote QSCD Service
-    Remote QSCD Service->>Mother: Accept key creation, choose PIN
-    Mother-->>Remote QSCD Service: Acceptance
-    Note right of Mother: Mother accepts key creation and choose PIN with a mobile device
-    Remote QSCD Service->>e-Signature BB: OK
-    deactivate Remote QSCD Service
-    end
-    e-Signature BB-->>Mother: QSCD Onboarded
+    e-Signature BB->>Remote SCD Service: onboard user
+    activate Remote SCD Service
+    Remote SCD Service->>User: Accept key creation, choose PIN
+    User-->>Remote SCD Service: Acceptance
+    Note right of User: User accepts key creation and choose PIN with a mobile device
+    Remote SCD Service->>e-Signature BB: OK
+    deactivate Remote SCD Service
+    e-Signature BB-->>User: SCD Onboarded
     deactivate e-Signature BB
 
 ```
 
+#### 9.2.2 Use user's Signature Creation Device (SCD) for signing
+
+```mermaid
+sequenceDiagram
+    activate Registration&UI BB
+    Note right of Registration&UI BB: Get document hash with client side library
+    Registration&UI BB->>e-Signature BB: Sign hash with Access token
+    activate e-Signature BB
+    e-Signature BB->>HSM: Create key with user data
+    e-Signature BB->>CA: Create certificate with CSR & publish
+    activate CA
+    CA-->>e-Signature BB: Certificate
+    deactivate CA
+    e-Signature BB-->>HSM: Sign with key & delete
+    HSM-->>e-Signature BB: signature
+
+    e-Signature BB->>TSA: Get timestamp for signature
+    activate TSA
+    TSA-->>e-Signature BB: Timestamp rfc3161
+    deactivate TSA
+    e-Signature BB-->>Registration&UI BB: Signature with timestamp
+    deactivate e-Signature BB
+    Note right of Registration&UI BB: Merge signature using client side library
+    deactivate Registration&UI BB
+```

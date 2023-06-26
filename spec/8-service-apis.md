@@ -56,6 +56,12 @@ eSignature Building Block must expose its microservices through RESTful API inte
 [1606_3.yaml](.gitbook/assets/1606_3.yaml)
 {% endswagger %}
 
+#### 8.2.8 Callback service API
+
+{% swagger src=".gitbook/assets/2306_2.yaml" path="/{version}/esignature/callback" method="get" %}
+[2306_2.yaml](.gitbook/assets/2306_2.yaml)
+{% endswagger %}
+
 ### 8.3 Audit log
 
 {% swagger src=".gitbook/assets/1606_4.yaml" path="/{version}/audit/log" method="get" %}

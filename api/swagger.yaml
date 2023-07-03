@@ -130,7 +130,7 @@
                           - "OK"
                           - "ERROR"
                         "example": "OK"
-                        "description": "Signature creation response"
+                        "description": "Signature creation response OK|ERROR"
                       "message":
                         "type": "string"
                         "example": "Signature generated successfully"
@@ -201,7 +201,7 @@
                     - "REMOTE_SCD_APP_SE_ANDROID"
                     - "REMOTE_SCD_SIM"
                     - "REMOTE_SCD_ESIM"
-                  "description": "Remote SCD type"
+                  "description": "Remote SCD type REMOTE_SCD_APP_APPLE|REMOTE_SCD_APP_ANDROID|REMOTE_SCD_APP_SE_APPLE|REMOTE_SCD_APP_SE_ANDROID|REMOTE_SCD_SIM|REMOTE_SCD_ESIM"
                 "SCDRemoteId":
                   "type": "string"
                   "description": "Device token (Android/Apple) for REMOTE_SCD_APP* and REMOTE_SCD_APP_SE*, for other TBD"
@@ -256,7 +256,7 @@
                           - "OK"
                           - "ERROR"
                         "example": "OK"
-                        "description": "Certificate creation response"
+                        "description": "Certificate creation response OK|ERROR"
                       "message":
                         "type": "string"
                         "example": "Certificate generated successfully"
@@ -318,7 +318,7 @@
               - "SUSPENDED"
             "example": "ALL"
           "required": false
-          "description": "Add filter condition"
+          "description": "Add filter condition ALL|ACTIVATED|EXPIRED|REVOKED|SUSPENDED"
       "responses":
         "200":
           "description": "List certificates response"
@@ -349,7 +349,7 @@
                             - "SUSPENDED"
                             - "REVOKED"
                           "example": "ACTIVE"
-                          "description": "Certificate status"
+                          "description": "Certificate status ACTIVE|ERROR|EXPIRED|SUSPENDED|REVOKED"
                         "message":
                           "type": "string"
                           "example": "Certificate active"
@@ -426,7 +426,7 @@
                           - "SUSPENDED"
                           - "REVOKED"
                         "example": "ACTIVE"
-                        "description": "Certificate status"
+                        "description": "Certificate status ACTIVE|ERROR|EXPIRED|SUSPENDED|REVOKED"
                       "message":
                         "type": "string"
                         "example": "Certificate active"
@@ -496,7 +496,7 @@
                         - "SUSPEND"
                         - "REVOKE"
                       "example": "SUSPEND"
-                      "description": "Certificate status to be updated, Allowed transitionsACTIVE->SUSPENDED, ACTIVE->REVOKED, SUSPENDED->ACTIVE, SUSPENDED->REVOKED"
+                      "description": "Certificate status to be updated ACTIVATE|SUSPEND|REVOKE, Allowed transitions ACTIVE->SUSPENDED, ACTIVE->REVOKED, SUSPENDED->ACTIVE, SUSPENDED->REVOKED"
                     "message":
                       "type": "string"
                       "example": "Certificate to be updated as suspended"
@@ -531,7 +531,7 @@
                           - "REVOKED"
                           - "EXPIRED"
                         "example": "SUSPENDED"
-                        "description": "Certificate status"
+                        "description": "Certificate status ERROR|ACTIVATED|SUSPENDED|REVOKED|EXPIRED"
                       "message":
                         "type": "string"
                         "example": "Certificate suspended"
@@ -589,7 +589,7 @@
                     - "JWS"
                     - "PAdES"
                   "example": "PAdES"
-                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library XAdES|CAdES|ASIC|JWS|PAdES"
                 "hash":
                   "type": "string"
                   "description": "hash as byte array encoded in base64"
@@ -605,7 +605,7 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "description": "hash type used"
+                  "description": "hash type used SHA2-256|SHA2-384|SHA2-512|SHA3-256|SHA3-384|SHA3-512|BLAKE2B"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
@@ -650,7 +650,7 @@
                           - "OK"
                           - "ERROR"
                         "example": "OK"
-                        "description": "Signature creation response"
+                        "description": "Signature creation response OK|ERROR"
                       "message":
                         "type": "string"
                         "example": "Signature generated successfully"
@@ -709,7 +709,7 @@
                     - "JWS"
                     - "PAdES"
                   "example": "PAdES"
-                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                  "description": "Pre format the signature in a give format so that it can be inserted by the formatting library XAdES|CAdES|ASIC|JWS|PAdES"
                 "hash":
                   "type": "string"
                   "description": "hash as byte array encoded in base64"
@@ -725,7 +725,7 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "description": "hash type used"
+                  "description": "hash type used SHA2-256|SHA2-384|SHA2-512|SHA3-256|SHA3-384|SHA3-512|BLAKE2B"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
@@ -814,7 +814,7 @@
               - "JWS"
               - "PAdES"
           "example": "PAdES"
-          "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+          "description": "Pre format the signature in a give format so that it can be more inserted by the formatting library XAdES|CAdES|ASIC|JWS|PAdES"
         -
           "in": "query"
           "name": "hash"
@@ -837,7 +837,7 @@
               - "SHA3-512"
               - "BLAKE2B"
             "example": "SHA2-256"
-            "description": "hash type used"
+            "description": "hash type used SHA2-256|SHA2-384|SHA2-512|SHA3-256|SHA3-384|SHA3-512|BLAKE2B"
         -
           "in": "query"
           "name": "dataToBeDisplayed"
@@ -988,7 +988,7 @@
                     - "JWS"
                     - "PAdES"
                   "example": "PAdES"
-                  "description": "Pre format the signature in a given format so that it can be inserted by the formatting library"
+                  "description": "Pre format the signature in a given format so that it can be inserted by the formatting library XAdES|CAdES|ASIC|JWS|PAdES"
                 "hash":
                   "type": "string"
                   "description": "hash as byte array encoded in base64"
@@ -1004,7 +1004,7 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "description": "hash type used"
+                  "description": "hash type used SHA2-256|SHA2-384|SHA2-512|SHA3-256|SHA3-384|SHA3-512|BLAKE2B"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
@@ -1049,7 +1049,7 @@
                           - "OK"
                           - "ERROR"
                         "example": "OK"
-                        "description": "Signature creation response"
+                        "description": "Signature creation response OK|ERROR"
                       "message":
                         "type": "string"
                         "example": "Signature generated successfully"
@@ -1131,6 +1131,7 @@
                     "signatureType":
                       "type": "string"
                       "enum": ["ONETIME", "SCD"]
+                      "description": "signature type ONETIME|SCD"
                     "signature":
                       "type": "string"
                       "example": "53F4yGNsOXymuGL9JjF3Qi377pQVLqkDZuc1shPJB3xFJHJnhW8yepjhU8ILTz/wYoahXnzKj8xyT7PtbtwEA=="
@@ -1157,7 +1158,7 @@
                             - "OK"
                             - "ERROR"
                           "example": "OK"
-                          "description": "Signature creation response"
+                          "description": "Signature creation response OK|ERROR"
                         "message":
                           "type": "string"
                           "example": "Signature generated successfully"
@@ -1198,7 +1199,7 @@
                   - "JWS"
                   - "PAdES"
                 "example": "PAdES"
-                "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                "description": "Pre format the signature in a give format so that it can be inserted by the formatting library XAdES|CAdES|ASIC|JWS|PAdES"
               "hash":
                 "type": "string"
                 "description": "hash as byte array encoded in base64"
@@ -1214,7 +1215,7 @@
                   - "SHA3-512"
                   - "BLAKE2B"
                 "example": "SHA2-256"
-                "description": "hash type used"
+                "description": "hash type used SHA2-256|SHA2-384|SHA2-512|SHA3-256|SHA3-384|SHA3-512|BLAKE2B"
               "dataToBeDisplayed":
                 "type": "string"
                 "example": "Please sign the consent form as requested (transactionId: 1234)"
@@ -1259,7 +1260,7 @@
                       - "OK"
                       - "ERROR"
                     "example": "OK"
-                    "description": "Signature creation response"
+                    "description": "Signature creation response OK|ERROR"
                   "message":
                     "type": "string"
                     "example": "Signature generated successfully"

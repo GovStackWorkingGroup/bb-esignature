@@ -1,138 +1,98 @@
 # 6 Functional Requirements
 
-Govstack eSignature BB functional requirements consist of&#x20;
+The eSignature BB has several functional layers within it. Some functional layers follow the existing set of protocols and custom protocols, While the other functional requirements are defined within this specification. In this section, we will provide a clear indication to state what blocks follow what kind of protocols.
 
-* eSignature with onetime certificate
-* eSignature with user's device (SCD)
-* Certificates management with user's device (SCD)
+## 6.1 HSM
 
-The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119
+6.1.1 In case of the One-time signature A HSM MUST be used to create cryptographic keys. (Required)
 
-### 6.1 eSignature with one time certificate
+6.1.2 It MUST be used to sign a certificate. (Required)
 
-6.1.1 Services SHALL be able to request user’s eSignature using one time certificate that is generated on the fly
+6.1.3 Keys SHALL NOT be exported
 
-6.1.2 Prerequisites for eSignature with one time certificate are:
+6.1.4 MUST be protected well with best security practices.
 
-6.1.2.1. User SHALL be authenticated via ID BB
+## 6.2 SCD
 
-6.1.2.2. User SHOULD have the payment completed via Payments BB
+6.2.1 SCD Device SHOULD have secure storage to protect private keys
 
-6.1.2.3. Service SHALL provide signature format
+6.2.2 SCD MAY have proprietary API's with the e-Signature block.
 
-6.1.2.4. Service SHALL provide hash to be signed
+6.2.3 SCD is assumed to be with the user.
 
-6.1.3. Service SHALL be notified about error conditions, such as "authentication required", "payment required" or "mandatory parameter is missing"
+6.2.4 User PIN is a MUST for the SCD.
 
-6.1.4. One time certificate SHALL be created using the temporary keypair generated inside HSM
+6.2.5 Keys SHALL NOT be exportable.
 
-6.1.5. Service SHALL be notified about signature, certificate and signature timestamp on successful completion of one time signing
+## 6.3 Timestamp
 
-### 6.2 eSignature with user's device
+6.3.1 For a valid signature, a Timestamp server is a MUST.
 
-#### 6.2.3 Certificate creation
+6.3.2 Timestamp server SHALL follow RFC3161&#x20;
 
-6.2.3.1 Users SHALL be able to create their own signing certificates that are bound to user’s SCD
+## 6.4 Certifying Authority (CA)
 
-6.2.3.2 Prerequisites for certificate creation are
+6.4.1 eSignature BB MAY be a certifying authority.
 
-6.2.3.2.1 User SHALL be authenticated via ID BB
+6.4.2 If not the BB SHALL have access to a certifying authority and can issue certificates or can be a Sub CA
 
-6.2.3.2.2. User SHOULD have the payment completed via Payments BB
+## 6.5 eSignature Service
 
-6.2.3.2.3. User SHALL have information required for certificate generation and management provided by SCD
+6.5.1 Service SHALL support onboarding of SCD
 
-6.2.3.2.4. User SHOULD be able to provide a unique pseudonym that is going to be bound with the certificate
+6.5.2 Service SHALL support both the key functionalities of signing using SCD and One-Time Signature.
 
-6.2.3.3 User SHALL be notified about error conditions, such as "authentication required", "payment required" or "mandatory parameter is missing"
+6.5.3 User SHALL be authenticated through ID BB for Onetime Signature
 
-6.2.3.4 User SHALL be provided with a certificate, certificateId and pseodonym on successful certificate creation
+6.5.4 User SHALL be allowed to perform signature through pseudonym without user login.
 
-#### 6.2.4 Certificates status check
+6.5.5 OPTIONALLY can support payments through payment gateway.
 
-6.2.4.1. Users SHALL be able to view own certificates and their statuses
+6.5.6 SHALL support all the listed signature types.
 
-6.2.4.2 Legally appointed authorities SHALL be able to view all user’s certificates and their statuses
+6.5.7 SHALL support redirection and callback as per the specification.
 
-6.2.4.3 Prerequisites for certificate status check are
+## 6.6 Certificate Management
 
-6.2.4.3.1 User or legally appointed authority SHALL be authenticated via ID BB
+6.6.1 SHALL provide the ability to list & revoke a certificate.
 
-6.2.4.3.2 A filter condition SHOULD be provided by user or legally appointed authority
+6.6.2  User SHALL have the ability to revoke his/her keys (API based or through customer care)
 
-6.2.4 Certificates SHALL have any of following statuses
+6.6.3 Certificates SHALL have any of following statuses
 
-6.2.4.1 ACTIVE – certificate is active and can be used for signing
+6.6.3.1 ACTIVE – certificate is active and can be used for signing
 
-6.2.4.2 EXPIRED – certificates is expired and should be renewed
+6.6.3.2 EXPIRED – certificates is expired and should be renewed
 
-6.2.4.3 SUSPENDED – certificate is suspended. The reason of suspension SHALL be provided together with status information
+6.6.3.3 SUSPENDED – certificate is suspended. The reason of suspension SHALL be provided together with status information
 
-6.2.4.4 REVOKED – certificate is revoked. The reason for revoking SHALL be provided together with status information
+6.6.3.4 REVOKED – certificate is revoked. The reason for revoking SHALL be provided together with status information
 
-6.2.5 User SHALL be notified about error conditions, such as "authentication required"
+6.6.4 Users SHALL be able to view own certificates and their statuses
 
-6.2.6 List of all certificates and it’s statuses are returned to user or legally appointed authority on successful status check
+## 6.7 Notification
 
-#### 6.2.5 eSignature with user’s device (SCD)
+6.7.1 SHALL provide the ability to notify the user over email or sms or app notification or any other equivalent
 
-6.2.5.1 Services SHALL be able to request user’s eSignature via user’s device (SCD).
+6.7.2 User SHALL be notified of failed and successful transactions.
 
-6.2.5.2 Prerequisites for eSignature with user's device are:
+## 6.8 Audit
 
-6.2.5.2.1 Service SHALL provide callback URL
+&#x20;6.8.1 All user activities SHOULD be available for audit.
 
-6.2.5.2.2 Service SHALL provide text to be displayed on user’s device (SCD)
+6.8.2 MAY have the feature to tamper proof the audit records.
 
-6.2.5.2.3 Service SHALL provide signature format
+6.8.3 Auditors SHALL have the ability to get audit-proof of a transaction.
 
-6.2.5.2.4 Service SHALL provide hash to be signed
+## 6.9 Logging (REQUIRED)
 
-6.2.5.2.5 Service SHALL provide nonce string to counter replay attacks
+6.9.1 The system SHALL provide traceability across services.
 
-6.2.5.2.6 Service SHALL provide state string to match the requests and callbacks
+6.9.2 The system SHALL provide logs to help debug the problems.
 
-6.2.5.3 Service SHALL be notified about error conditions, such as "mandatory parameter is missing"
+6.9.3 The system SHALL NOT print sensitive information.
 
-6.2.5.4 Service SHALL be notified about redirect URL
 
-6.2.5.4.1 Service MUST redirect user to pseudonym entry webpage provided in redirect URL
 
-6.2.5.4.2 After user enters the pseudonym on pseudonym entry webpage, the signature SHALL be generated
-
-6.2.5.5 To perform the signature operation, the signing parameters (hash, text to be displayed) SHALL be sent to user’s device (SCD).
-
-6.2.5.6. After user confirms the signing with a PIN code, the signature SHALL be sent back to eSignature BB.
-
-6.2.5.7 Response id, nonce and state are returned to callback url on successful completion of signing operation. Service shall verify the nonce and state variables to be matching with the original requests before proceeding.
-
-6.2.5.8 Formatted signature, certificate and signature timestamp are returned via internal API call using Response id
-
-### 6.3 Auditing
-
-6.3.1 Users and auditors SHALL be able to request user’s signing transactions
-
-6.3.2 Prerequisites for auditing are:
-
-6.3.2.1 User or Auditor SHALL be authenticated via ID BB
-
-6.3.2.2 User or Auditor SHOULD set the start and end date
-
-6.3.3 User or Auditor SHALL be notified about error conditions, such as "authentication required" or "mandatory parameter is missing"
-
-6.3.4 User or Auditor SHALL be notified about list of signature, certificate and signature timestamp on successful completion of audit request&#x20;
-
-## 6.5 Revision History (RECOMMENDED)
-
-
-
-## 6.6 Change Notification Subscription (RECOMMENDED)
-
-
-
-## 6.7 Change Notification (OPTIONAL)
-
-
-
-## 6.8 Logging (REQUIRED)
+**Note:** The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in RFC 2119
 

@@ -65,8 +65,14 @@
                     "description": "jwt pseudonym authorization"
                 "example":
                   "jwt": "eyJ0eXAiOiJKV1QiLCJhbGciOiJFUzI1NiIsImtpZCI6IjcyNzcyYzI5OGNkZDNmYmQ3YmQxNmI5NTAxZDY0ODdiIn0.eyJwdWIiOiJKb2huIERvZSJ9.zNNhLDuydPHC7-YQYDhaGTaqS-efAL79pJXdWWm5Y7Fd94fVRCLvRTaA16ffQyhYPXHKcx8Q9baTB_fX0PtBuA"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/sign/response/{signatureId}":
     "get":
       "tags":
@@ -109,7 +115,7 @@
                   "responseTimestamp":
                     "type": "string"
                     "format": "date-time"
-                    "Description": "Timestamp in ISO 8601"
+                    "description": "Timestamp in ISO 8601"
                     "example": "2023-03-20T09:12:38Z"
                   "signatureTimestamp":
                     "type": "string"
@@ -137,8 +143,15 @@
                   "status":
                     "code": "OK"
                     "message": "Signature generated successfully"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
+
   "/{version}/cert/create":
     "post":
       "tags":
@@ -194,14 +207,14 @@
                   "description": "Device token (Android/Apple) for REMOTE_SCD_APP* and REMOTE_SCD_APP_SE*, for other TBD"
                 "SCDKeyId":
                   "type": "number"
-                  "Description": "Key index to be used on SCD"
+                  "description": "Key index to be used on SCD"
                 "pseodonym":
                   "type": "string"
-                  "Description": "Optional pseodonym chosen by user"
+                  "description": "Optional pseodonym chosen by user"
                 "requestTimestamp":
                   "type": "string"
                   "format": "date-time"
-                  "Description": "Timestamp in ISO 8601"
+                  "description": "Timestamp in ISO 8601"
               "example":
                 "CSR": "-----BEGIN CERTIFICATE REQUEST-----\r\nMIICWDCCAUACAQAwEzERMA8GA1UEAwwISm9obiBEb2UwggEiMA0GCSqGSIb3DQEB\r\nAQUAA4IBDwAwggEKAoIBAQDVNn2MLtrc/w+BqU2WYT5+IBUx+E0m3s9VMfXjLJpJ\r\nWK5qna92wcyeJPCNcJDgYqMa15x/7OM6uyNXSQmwLAM6XYivCAR6OV8cF9jbpvh8\r\nUXVPp0zrX2uDGUxp73+Gcy2ARCtZSLF0MQGzJD7uHAR/LfYq+9hhlNqjP4jDr9uX\r\ngO+fnJjRY/tNg6IYKcV4RK52Qf/ZmPvKC7yBTOba2n/dlBeDj7HqUGKSVDOLtqa8\r\nW3XMFQpme9BYnpXMpGhu7vOD0Sm5gAOdMdlEILJLE4ZsQDyZSLxKAkuAQAKC5WPr\r\nYtCBYU4amIxvhXEUeUePMGvqACQargxtXpKOnU86dwXRAgMBAAGgADANBgkqhkiG\r\n9w0BAQsFAAOCAQEABmsIpQACArM5w7uQysuh6Aooe/fe6It9kYNccmHXf+Hta+i0\r\nzrXkOBZ80EuOFebuGzuc2R/cVpB4X6l9D6wNbn8Ee1NcnQOBb16U8Pjci9h24cVE\r\noDRAEJdae39ND4UFm4JAjiDfWO7cM0YtPkAAmtsY5ZWruReNVUsXJeco0fbIghuL\r\nhORaNIwEhw7zczpIDoQblNgaL7Tq4qpMPCf6hg+5KeoJEzQDlRBmLIrnFRTwCXpT\r\nDgWkOkbnsB1p4ebO/8RfD5sEmTIwiQHV2J71Ob6NMrBHbArZ79dyAdzuefQeRIhO\r\nLJEN4ipQLrwvjciJG9s48xEWrWrMNwT9AW+lWA==\r\n-----END CERTIFICATE REQUEST-----"
                 "SCDType": "REMOTE_SCD_APP_ANDROID"
@@ -233,7 +246,7 @@
                   "responseTimestamp":
                     "type": "string"
                     "format": "date-time"
-                    "Description": "Timestamp in ISO 8601"
+                    "description": "Timestamp in ISO 8601"
                   "status":
                     "type": "object"
                     "properties":
@@ -256,12 +269,19 @@
                   "status":
                     "code": "OK"
                     "message": "Certificate generated successfully"
+        "400": 
+          "description": "Bad request"
         "401":
           "description": "ID BB Authentication required"
-        "403":
+        "402":
           "description": "Payment required"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
+
   "/{version}/cert/list":
     "get":
       "tags":
@@ -347,8 +367,14 @@
                     "status":
                       "code": "REVOKED"
                       "message": "Certificate was revoked on 05.01.2023 because device was lost"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/cert/pseudonym":
     "get":
       "tags":
@@ -411,8 +437,14 @@
                   "status":
                     "code": "ACTIVE"
                     "message": "Certificate active"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/cert/{certificateId}":
     "patch":
       "tags":
@@ -453,7 +485,7 @@
                 "requestTimestamp":
                   "type": "string"
                   "format": "date-time"
-                  "Description": "Timestamp in ISO 8601"
+                  "description": "Timestamp in ISO 8601"
                 "status":
                   "type": "object"
                   "properties":
@@ -486,7 +518,7 @@
                   "responseTimestamp":
                     "type": "string"
                     "format": "date-time"
-                    "Description": "Timestamp in ISO 8601"
+                    "description": "Timestamp in ISO 8601"
                   "status":
                     "type": "object"
                     "properties":
@@ -509,10 +541,16 @@
                   "status":
                     "code": "SUSPENDED"
                     "message": "Certificate supended because of user action on 02.02.2023"
+        "400": 
+          "description": "Bad request"
         "401":
           "description": "ID BB Authentication required"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/sign/certificateId/{certificateId}":
     "post":
       "tags":
@@ -567,15 +605,15 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "Description": "hash type used"
+                  "description": "hash type used"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
-                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                  "description": "Data to be displayed on users SCD (for ex transactionId)"
                 "requestTimestamp":
                   "type": "string"
                   "format": "date-time"
-                  "Description": "Timestamp in ISO 8601"
+                  "description": "Timestamp in ISO 8601"
                   "example": "2023-03-20T09:12:28Z"
         "required": true
       "responses":
@@ -597,7 +635,7 @@
                   "responseTimestamp":
                     "type": "string"
                     "format": "date-time"
-                    "Description": "Timestamp in ISO 8601"
+                    "description": "Timestamp in ISO 8601"
                     "example": "2023-03-20T09:12:38Z"
                   "signatureTimestamp":
                     "type": "string"
@@ -625,8 +663,14 @@
                   "status":
                     "code": "OK"
                     "message": "Signature generated successfully"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/sign/pseudonym":
     "post":
       "tags":
@@ -681,11 +725,11 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "Description": "hash type used"
+                  "description": "hash type used"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
-                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                  "description": "Data to be displayed on users SCD (for ex transactionId)"
                 "nonce":
                   "type": "string"
                   "description": "hex string value of hash to mitigate replay attacks"
@@ -697,7 +741,7 @@
                 "requestTimestamp":
                   "type": "string"
                   "format": "date-time"
-                  "Description": "Timestamp in ISO 8601"
+                  "description": "Timestamp in ISO 8601"
                   "example": "2023-03-20T09:12:28Z"
         "required": true
       "responses":
@@ -726,8 +770,6 @@
                   "status":
                     "code": "OK"
                     "message": "Signature generated successfully"
-        "422":
-          "description": "Mandatory field not present"
         "302":
           "description": "Redirect to /sign/interactivePseudonym if X-Pseodonym-Token not present"
           "headers":
@@ -736,6 +778,15 @@
                 "type": "string"
                 "format": "uri-reference"
               "example": "https://esignaturebi/v1/sign/interactivePseudonym?format=PAdES&hash=AAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAAA&hashType=SHA2-256&dataToBeDisplayed=SGVsbG8gV29ybGQ&requestTimestamp=2023-03-20T09%3A12%3A28Z&nonce=d2dff00401c92ca6879ef5f0938ce31580898266d59832d8531e8d04fc3898a6&state=2569cb4125cb7303f0f16782e7e2814b2269888c734af4c90639653e4f92d3a5&callbackUrl=http%3A%2F%2Fmysite%2F"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
+        "422":
+          "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
+
   "/{version}/sign/interactivePseudonym":
     "get":
       "tags":
@@ -786,7 +837,7 @@
               - "SHA3-512"
               - "BLAKE2B"
             "example": "SHA2-256"
-            "Description": "hash type used"
+            "description": "hash type used"
         -
           "in": "query"
           "name": "dataToBeDisplayed"
@@ -794,14 +845,14 @@
             "type": "string"
             "format": "base64urlencoded"
             "example": "UGxlYXNlIHNpZ24gdGhlIGNvbnNlbnQgZm9ybSBhcyByZXF1ZXN0ZWQgKHRyYW5zYWN0aW9uSWQ6MTIzNCk"
-            "Description": "Data to be displayed on users SCD (for ex transactionId)"
+            "description": "Data to be displayed on users SCD (for ex transactionId)"
         -
           "in": "query"
           "name": "requestTimestamp"
           "schema":
             "type": "string"
             "format": "urlencoded"
-            "Description": "Timestamp in ISO 8601"
+            "description": "Timestamp in ISO 8601"
             "example": "2023-03-20T09%3A12%3A28Z"
         -
           "in": "query"
@@ -834,8 +885,14 @@
             "text/html":
               "schema":
                 "type": "string"
+        "400": 
+          "description": "Bad request"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
   "/{version}/esignature/callback":
     "get":
       "tags":
@@ -931,7 +988,7 @@
                     - "JWS"
                     - "PAdES"
                   "example": "PAdES"
-                  "description": "Pre format the signature in a give format so that it can be more easily inserted by the formatting library"
+                  "description": "Pre format the signature in a given format so that it can be inserted by the formatting library"
                 "hash":
                   "type": "string"
                   "description": "hash as byte array encoded in base64"
@@ -947,15 +1004,15 @@
                     - "SHA3-512"
                     - "BLAKE2B"
                   "example": "SHA2-256"
-                  "Description": "hash type used"
+                  "description": "hash type used"
                 "dataToBeDisplayed":
                   "type": "string"
                   "example": "Please sign the consent form as requested (transactionId: 1234)"
-                  "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                  "description": "Data to be displayed on users SCD (for ex transactionId)"
                 "requestTimestamp":
                   "type": "string"
                   "format": "date-time"
-                  "Description": "Timestamp in ISO 8601"
+                  "description": "Timestamp in ISO 8601"
                   "example": "2023-03-20T09:12:28Z"
         "required": true
       "responses":
@@ -977,7 +1034,7 @@
                   "responseTimestamp":
                     "type": "string"
                     "format": "date-time"
-                    "Description": "Timestamp in ISO 8601"
+                    "description": "Timestamp in ISO 8601"
                     "example": "2023-03-20T09:12:38Z"
                   "signatureTimestamp":
                     "type": "string"
@@ -1005,12 +1062,19 @@
                   "status":
                     "code": "OK"
                     "message": "Signature generated successfully"
+        "400": 
+          "description": "Bad request"
         "401":
           "description": "ID BB Authentication required"
-        "403":
+        "402":
           "description": "Payment required"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
+
   "/{version}/audit/log":
     "get":
       "tags":
@@ -1032,7 +1096,7 @@
           "schema":
             "type": "string"
             "format": "urlencoded"
-            "Description": "Timestamp in ISO 8601"
+            "description": "Timestamp in ISO 8601"
             "example": "2023-03-20T09%3A12%3A28Z"
           "required": false
           "description": "Start date"
@@ -1042,7 +1106,7 @@
           "schema":
             "type": "string"
             "format": "urlencoded"
-            "Description": "Timestamp in ISO 8601"
+            "description": "Timestamp in ISO 8601"
             "example": "2023-03-20T09%3A12%3A28Z"
           "required": false
           "description": "End date"
@@ -1078,7 +1142,7 @@
                     "responseTimestamp":
                       "type": "string"
                       "format": "date-time"
-                      "Description": "Timestamp in ISO 8601"
+                      "description": "Timestamp in ISO 8601"
                       "example": "2023-03-20T09:12:38Z"
                     "signatureTimestamp":
                       "type": "string"
@@ -1107,10 +1171,16 @@
                     "status":
                       "code": "OK"
                       "message": "Signature generated successfully"
+        "400": 
+          "description": "Bad request"
         "401":
           "description": "ID BB Authentication required"
+        "404": 
+          "description": "Not found"
         "422":
           "description": "Mandatory field not present"
+        "429": 
+          "description": "Too many requests"
 "components":
   "requestBodies":
     "signBody":
@@ -1144,15 +1214,15 @@
                   - "SHA3-512"
                   - "BLAKE2B"
                 "example": "SHA2-256"
-                "Description": "hash type used"
+                "description": "hash type used"
               "dataToBeDisplayed":
                 "type": "string"
                 "example": "Please sign the consent form as requested (transactionId: 1234)"
-                "Description": "Data to be displayed on users SCD (for ex transactionId)"
+                "description": "Data to be displayed on users SCD (for ex transactionId)"
               "requestTimestamp":
                 "type": "string"
                 "format": "date-time"
-                "Description": "Timestamp in ISO 8601"
+                "description": "Timestamp in ISO 8601"
                 "example": "2023-03-20T09:12:28Z"
       "required": true
   "responses":
@@ -1174,7 +1244,7 @@
               "responseTimestamp":
                 "type": "string"
                 "format": "date-time"
-                "Description": "Timestamp in ISO 8601"
+                "description": "Timestamp in ISO 8601"
                 "example": "2023-03-20T09:12:38Z"
               "signatureTimestamp":
                 "type": "string"

@@ -28,7 +28,7 @@ The SCD Signing is one of the key functionality of eSignatures BB. When a user h
 
 ## 4.7 Certificate Management
 
-All certificates that are created within the One Time Signature Module or in SCD  will be hosted in this module. The modules lets everyone to have their X509 public certificate hosted for any verification. The module should have an administrative ability to let people revoke the keys on demand. The module has to maintain the OCSP & CRL based revocations.&#x20;
+All certificates that are created within the  SCD  will be hosted in this module. The modules let everyone have their X509 public certificate hosted for any verification. The module should have an administrative ability to let people revoke the keys on demand. The module has to maintain the OCSP & CRL-based revocations.&#x20;
 
 ## 4.8 Notification&#x20;
 

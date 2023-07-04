@@ -25,7 +25,7 @@ sequenceDiagram
     activate ID BB
     activate e-Service
     Note right of e-Service: Get document hash with client side library
-    e-Service->>e-Signature BB: Sign hash with Access token
+    e-Service->>e-Signature BB: api call /sign/onetime 
     activate e-Signature BB
     e-Signature BB->>ID BB: Invoke introspect API with Access token
     ID BB-->>e-Signature BB: user details, user PSUT
@@ -129,15 +129,15 @@ sequenceDiagram
     e-Service->>e-Signature BB frontend: request client side library
     e-Signature BB frontend-->>e-Service: provide client side library
     Note right of e-Service: Get document hash with client side library
-    e-Service->>e-Signature BB backend: Sign hash
+    e-Service->>e-Signature BB backend: call api /sign/pseudonym
     activate e-Signature BB backend
-    e-Signature BB backend-->>e-Service: Redirect to Pseudonym entry page
+    e-Signature BB backend-->>e-Service: Redirect to /sign/interactivePseudonym
     e-Service->>e-Signature BB frontend: Pseodonym entry page with callback
     activate e-Signature BB frontend
     Note right of e-Signature BB frontend: provide html for pseodonym entry
-    e-Signature BB frontend->>e-Signature BB backend: pseodonym
+    e-Signature BB frontend->>e-Signature BB backend: api call /token/pseodonym
     e-Signature BB backend-->>e-Signature BB frontend: pseodonym token
-    e-Signature BB frontend->>e-Signature BB backend: sign hash, pseodonym token
+    e-Signature BB frontend->>e-Signature BB backend: api call /sign/pseudonym
     e-Signature BB backend->>Remote SCD Service: sign hash, SCD Remote Id
     activate Remote SCD Service
     Remote SCD Service->>User: Sign request
@@ -150,9 +150,9 @@ sequenceDiagram
     TSA-->>e-Signature BB backend: Timestamp rfc3161
     deactivate TSA
     e-Signature BB backend-->>e-Signature BB frontend:signatureId
-    e-Signature BB frontend-->>e-Service: redirect to callback with signatureId
+    e-Signature BB frontend-->>e-Service: redirect to callback url
     deactivate e-Signature BB frontend
-    e-Service->>e-Signature BB backend: request signature using signatureId
+    e-Service->>e-Signature BB backend: api call /sign/response
     Note right of e-Signature BB backend: Optional: verify request using IP/Xroad
     e-Signature BB backend-->>e-Service: signature&timestamp
     deactivate e-Signature BB backend

@@ -6,65 +6,63 @@ eSignature Building Block must expose its microservices through RESTful API inte
 
 ### 8.1 eSignature with one time certificate
 
-
-
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/sign/onetime" method="post" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/onetime" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 ### 8.2 eSignature with user's device (SCD)
 
 #### 8.2.1 Certificate creation
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/cert/create" method="post" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/cert/create" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.2 List certificates
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/cert/list" method="get" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/cert/list" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.3 Update certificate
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/cert/{certificateId}" method="patch" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/cert/{certificateId}" method="patch" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.4 eSignature with user's device
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/sign/pseudonym" method="post" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/pseudonym" method="post" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.5 Webservice to enter user pseudonym
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/sign/interactivePseudonym" method="get" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/interactivePseudonym" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.6 User pseudonym API
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/token/pseodonym/{pseudonym}" method="get" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/token/pseodonym/{pseudonym}" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.7 Get signature response
 
-{% swagger src=".gitbook/assets/1606_3.yaml" path="/{version}/sign/response/{signatureId}" method="get" %}
-[1606_3.yaml](.gitbook/assets/1606_3.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/response/{signatureId}" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 #### 8.2.8 Callback service API
 
-{% swagger src=".gitbook/assets/2306_2.yaml" path="/{version}/esignature/callback" method="get" %}
-[2306_2.yaml](.gitbook/assets/2306_2.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/esignature/callback" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
 ### 8.3 Audit log
 
-{% swagger src=".gitbook/assets/1606_4.yaml" path="/{version}/audit/log" method="get" %}
-[1606_4.yaml](.gitbook/assets/1606_4.yaml)
+{% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/audit/log" method="get" %}
+[https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 

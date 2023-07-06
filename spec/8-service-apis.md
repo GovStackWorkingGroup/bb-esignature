@@ -30,6 +30,8 @@ eSignature Building Block must expose its microservices through RESTful API inte
 [https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
+The update API can be used to revoke the certificate. All revoked certificates will be available over [OCSP](https://www.rfc-editor.org/rfc/rfc8954.html) or [CRL](https://www.itu.int/rec/T-REC-X.509-201910-I/en) .&#x20;
+
 #### 8.2.4 eSignature with user's device
 
 {% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/pseudonym" method="post" %}

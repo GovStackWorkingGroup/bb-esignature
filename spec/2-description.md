@@ -83,7 +83,9 @@ The key created on the SCD device can be used by the user to digitally sign any 
 * Once the user signs the SCD will send the signature to the Third-Party.
 * The Digital Signature will then be attached to the given document in one of the supported formats as described by the eSignature BB.
 
-### 2.1.1 Users should be able to
+## 2.3 Current Scope
+
+### 2.3.1 Users should be able to
 
 * View & Provide consent to the document that is about to be signed
 * Register the user's Signature Creation Device (SCD)&#x20;
@@ -93,37 +95,39 @@ The key created on the SCD device can be used by the user to digitally sign any 
 * Use a personal device to store the keys safely.
 * Ability to sign the document where the user has no device.&#x20;
 * Ability to sign a document without the involvement of ID BB
-*   Ability to sign a document only the ID issued by the ID building block
+*   Ability to sign a document using only the ID issued by the ID building block
 
     User
+* Ability to view the list of signings performed.
 
-### 2.1.2 Services &#x20;
+### 2.3.2 Services &#x20;
 
 * API to invoke eSignatures
 * Sign the digital document in desired eSignature format
 * Allows safe async way to obtain signatures
 * A simple-to-use library to validate the eSignature
 
-### 2.1.3 Auditor&#x20;
+### 2.3.3 Auditor&#x20;
 
 * API to retrieve specific audit data.
 * API to validate and get signatures on any audit data.
 * Cryptographic audits and guidelines should be followed for auditing of key security
 
-### 2.1.4 Administrator&#x20;
+### 2.3.4 Administrator&#x20;
 
 * Ability to configure the system without intervening with the signature process.
 * No APIs are provided for administrative needs.
 * Should not be able to modify or alter the data.
 
-## 2.3 eSignature library
+## 2.4 eSignature library
 
 eSignature BB will provide a helper library for the Services. The helper library could be used to integrate eSignatures faster.&#x20;
 
 * Get digital document digest to be sent to eSignature BB.  Obtaining just the hash reduces the storage overhead and also avoids the privacy concern of sending the original document.
-* Embedding received eSignature back into the document and validate digital documents with eSignature.
+* Embedding received eSignature back into the document or attaching it in case of detached signatures.&#x20;
+* Validate digitally signed documents and the validity of the certificate.
 
-## 2.4 eSignature formats
+## 2.5 eSignature formats
 
 Supports the following signature formats:
 
@@ -133,24 +137,24 @@ Supports the following signature formats:
 * [ASIC - Interoperable signatures](https://www.etsi.org/deliver/etsi\_en/319100\_319199/31916201/01.01.01\_60/en\_31916201v010101p.pdf)
 * [JWS (RFC 7515)](https://www.rfc-editor.org/rfc/rfc7515)
 
-## 2.5 Authentication and Security
+## 2.6 Authentication and Security
 
 In order for eSignatures to be secure and adhere to privacy regulations the eSignature BB uses the following levels of authentication
 
 * Authentication via ID BB - The service that uses eSignature will have to authenticate the user against ID BB.
-* Unique pseudonym - The service is redirected to a webpage on eSignature portal where the user can enter a unique pseudonym known only to the user to start the signing process. Of-course without a pin the signing will not be complete.
+* Unique pseudonym - The service is redirected to a webpage on eSignature portal where the user can enter a unique pseudonym known only to the user to start the signing process. Of course without a pin the signing will not be complete.
 * Asking for PIN code on the user's device - eSignature BB will send a request to the user's device so that the user can confirm the signing request with a PIN.
 * The signature will be returned using an internal API protected by the Information Mediation Block
 
-## 2.6 Audit Trail and Compliance
+## 2.7 Audit Trail and Compliance
 
 eSignature BB must log all signing transactions to be compliant with current regulations. The minimum details to be logged are
 
-* User's identity
-* Document digest
-* Timestamp
+* User's identity without revealing personally identifiable information.
+* Document digest.
+* Timestamp of the signing.
 
-## 2.2 Out of Scope
+## 2.8 Out of Scope
 
 * Document storage - no documents will be accepted or stored in the service
 * Communication with the SCD is left out of scope it's up to the eSignature service provider.

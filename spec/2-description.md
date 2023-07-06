@@ -1,12 +1,10 @@
 # 2 Description
 
-eSignature building block provides the necessary functionality to bring handwritten signatures to the digital world. Handwritten signatures have served as a way to agree/witness a given document. But in today's digital world, most of the documents are in digital form. The digital form varies between structured (XML, JSON ) and unstructured documents(PDF, Word, Image, CSV, Spreadsheet).  eSignatures can be added to these digital documents similar to handwritten signatures achieving the same functionality.
+eSignature building block provides the necessary functionality to bring handwritten signatures to the digital world. Handwritten signatures have served as a way to agree/witness a given document. But in today's digital world, most of the documents are in digital form. The digital form varies between structured (XML, JSON ) and unstructured documents(PDF, Word, Image, CSV, Spreadsheet).  eSignatures can be added to digital documents similar to handwritten signatures achieving the same functionality.
 
+Also, eSignatures improve user experience in managing the signing process as the same can be embedded directly in e-Services, leaving out the need to print out forms, sign on paper, scan & upload/send.
 
-
-Another benefit is improved user experience in managing the signing process as the signing process can be embedded directly in e-Services, leaving out the need to print out forms, sign on paper, scan & upload/send.
-
-eSignature provides a huge advantage over handwritten signatures. They can be used to verify if the signature matches the user & original content(Content same as that during signing). This assurance gives us the ability to trust a signed document remotely.  This allows the eSignature to be used for legally binding agreements. Sample use cases include:
+eSignature provides a huge advantage over handwritten signatures. They offer verification at any point in time. This allows for remote validation of signatures, content (Content same as that during signing), identity and time. This assurance gives us the ability to trust a signed document remotely and can be used for legally binding agreements. Sample use cases include:
 
 * Submitting applications to Government agencies (Child care, Residence Registration, Marrying, etc)
 * Purchase and use banking services (Making transfers, Adding transfer limits, Applying for loans)
@@ -26,16 +24,16 @@ The current scope is to solve the following&#x20;
 
 ### 2.1.1 Actors
 
-* Users - People or Application who use the eSignature Building Block to give eSignatures.
-* Services - 3rd party internet services that require user eSignature to provide the service
+* Users - People or Applications (delegated by a User) who use the eSignature Building Block to give eSignatures.
+* Services - 3rd party services that require user eSignature to provide the service
 * Auditor - Individual or Organization that reviews the platform for any misuse (Intentional & Unintentional)
-* Administrator - Individual Or Team that configures the eSignature building block.&#x20;
-* Certification Authority - A certification authority who can issue a certificate as X509.
-* Timestamp Authority - Trusted thirdparty who can issue a certified time.&#x20;
+* Administrator - Individual Or Team that configures the eSignature building block and is responsible to ensure the functioning of the building block.
+* Certification Authority - A certification authority that can issue a certificate as X509.
+* Timestamp Authority - A trusted third-party who can provide certified time.&#x20;
 
 ## 2.2 eSignature Lifecycle
 
-There are two lifecycle available for the eSignature building block. Both the mechanism has its own unique advantages. Its recommended to follow both approaches for an inclusive approach&#x20;
+There are two lifecycles available for the eSignature building block. Both the mechanism has its own unique advantages. Its recommended to follow both approaches for an inclusive approach&#x20;
 
 ### 2.2.1 One Time Signature Approach
 
@@ -81,13 +79,13 @@ The key created on the SCD device can be used by the user to digitally sign any 
 * The eSignature BB will ask for the pseudonym (his eSignature handle) from the user.
 * The user provides the pseudonym to the eSignature BB.
 * The eSignature BB sends a notification to the SCD (Internal Protocol)
-* The user is shown with his choice to sign or not to sign.
+* The user is shown his choice to sign or not to sign.
 * Once the user signs the SCD will send the signature to the Third-Party.
-* The eSignature will then be attached to the given document in one of the supported formats.
+* The Digital Signature will then be attached to the given document in one of the supported formats as described by the eSignature BB.
 
 ### 2.1.1 Users should be able to
 
-* View & give consent to the document that is about to be signed
+* View & Provide consent to the document that is about to be signed
 * Register the user's Signature Creation Device (SCD)&#x20;
 * Confirm the signature with PIN code on the user's SCD&#x20;
 * View user's SCD-s and certificates

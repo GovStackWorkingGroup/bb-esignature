@@ -6,9 +6,4 @@ Add a line to the version history table describing the major changes to the spec
 
 _\<Example Version history>_
 
-| Version | Authors                                                                            | Comment                                                                                                 |
-| ------- | ---------------------------------------------------------------------------------- | ------------------------------------------------------------------------------------------------------- |
-| 0.7     | Steve Conrad                                                                       | Initial Revision                                                                                        |
-| 0.8     | Max Carlson, Steve Conrad, Dr. Ramkumar, Trevor Kinsey from the Architecture Group | Applied document standards to template                                                                  |
-| 0.9     | Architecture Team                                                                  | Added sections for review comments, updated to match formatting numbering/fonts/etc. scheme agreed upon |
-| 1.0     | Steve Conrad, GovStack Technical Committee                                         | Update format for GitBook, revisions for GovStack 1.0 release                                           |
+<table><thead><tr><th width="152.33333333333331">Version</th><th width="311">Authors</th><th>Comment</th></tr></thead><tbody><tr><td>0.8</td><td>Sasikumar Ganesan, Jurgen Niinre,  Ramkumar.P.S., Kassy Kadio</td><td>Initial draft specifications</td></tr><tr><td>0.9</td><td>e-sig team + Architecture team + Technical committee</td><td>Technical review and updates</td></tr><tr><td>1.0</td><td>e-sig team + Product committees</td><td>Presentation updates</td></tr></tbody></table>

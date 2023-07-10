@@ -85,7 +85,7 @@ The key created on the SCD device can be used by the user to digitally sign any 
 
 ## 2.3 Current Scope
 
-### 2.3.1 Users should be able to
+### 2.3.1 This building block must enable user to
 
 * View & Provide consent to the document that is about to be signed
 * Register the user's Signature Creation Device (SCD)&#x20;
@@ -100,24 +100,23 @@ The key created on the SCD device can be used by the user to digitally sign any 
     User
 * Ability to view the list of signings performed.
 
-### 2.3.2 Services &#x20;
+### 2.3.2 This building block must enable other eServices  to
 
-* API to invoke eSignatures
+* Invoke eSignatures to obtain a digital signature
 * Sign the digital document in desired eSignature format
 * Allows safe async way to obtain signatures
 * A simple-to-use library to validate the eSignature
 
-### 2.3.3 Auditor&#x20;
+### 2.3.3 This building block must enable auditor to
 
-* API to retrieve specific audit data.
-* API to validate and get signatures on any audit data.
-* Cryptographic audits and guidelines should be followed for auditing of key security
+* Retrieve and review specific audit data.
+* Validate and get signatures on any audit data.
+* Audit cryptographic functioning and compliance for auditing & key security
 
-### 2.3.4 Administrator&#x20;
+### 2.3.4 This building block must enable the administrator to
 
-* Ability to configure the system without intervening with the signature process.
-* No APIs are provided for administrative needs.
-* Should not be able to modify or alter the data.
+* Configure the system without intervening with the signature process.
+* Administer without modification or tampering with the data or key security.
 
 ## 2.4 eSignature library
 

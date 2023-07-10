@@ -2,20 +2,12 @@
 
 ## 5.1 HSM Compliance (REQUIRED)
 
-HSM MUST be compliant to a minimum of FIPS 140-2 Level 3. This guarantees the protection of private keys. HSM/Key Management application shall not print any information about the end-use details. Keys should be created only within the HSM.&#x20;
+HSM MUST be compliant to a minimum of FIPS 140-2 Level 3. This guarantees the protection of private keys. HSM/Key Management application shall not print any information about the end-use details. Keys should be created only within the HSM. This may be applicable to all other building blocks when dealing with cryptographic keys.
 
-## 5.2 Key Deletion (REQUIRED)
+## 5.2 Audit (REQUIRED)
 
-Keys created during One Time Signature should be deleted as soon as the signature process is over. Logs SHOULD be kept in a database of the details of the deletion. Logs MUST include timestamps and identify the user and affiliation that performed the transaction.
+All audit logs SHALL be integrity protected against tampering. The eSignature BB shall follow the data policy and audit logging requirements as laid out in the Govstack architecture.
 
-## 5.3 Audit (REQUIRED)
+## 5.3 Privacy (OPTIONAL)
 
-All audit logs SHALL be integrity protected against tampering. The Consent BB shall follow the data policy and audit logging requirements as laid out in the Govstack architecture.
-
-## 5.4 SCD Compliance (REQUIRED)
-
-The SCD SHOULD be qualified with at least one of the following FIPS 14-2 Level 3 or Annex II of [Regulation (EU) No 910/2014 (eIDAS)](https://en.wikipedia.org/wiki/EIDAS) or equivalent common criteria certification.
-
-## 5.5 Privacy (OPTIONAL)
-
-Signing using a single key can compromise the user's privacy in the longer run. Privacy-preserving techniques can be used in the signature schemes to protect the user's privacy.
+Signing using a single key can compromise the user's privacy in the longer run. For eg Single key used to sign consent of health form and agreement of the medical insurance could  reveal that the consent and the agreement is from the same person. Generally available signed documents could be used to perform 360 degree profiling. This is in violation to the Generic Architectural Privacy recommendation. Privacy-preserving techniques can be used in the signature schemes to protect the user's privacy.

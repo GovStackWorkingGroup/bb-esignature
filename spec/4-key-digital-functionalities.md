@@ -10,6 +10,8 @@ The Hardware Security Module is an integral part of the eSignatures BB. The HSM 
 
 The SCD is the component where the user's private key would be stored. The SCD could be a Smart card, Mobile App, Sim card App or equivalent. The SCD interacts with the eSignature BB using its own internal protocol. Every eSignature BB will support one or many such SCD. Most of the SCD would be protected with a secure PIN/Biometrics.
 
+The SCD SHOULD be qualified with at least one of the following FIPS 14-2 Level 3 or Annex II of [Regulation (EU) No 910/2014 (eIDAS)](https://en.wikipedia.org/wiki/EIDAS) or equivalent common criteria certification.
+
 ## 4.3 Timestamp
 
 The time of a sign is an important part of the signature. Without a proper time of the signature, we can never trust the signature, as one can not find if the signature happened before its expiry or after expiry. Most often this functionality is provided by the timestamping server hosted by the CA.
@@ -17,6 +19,8 @@ The time of a sign is an important part of the signature. Without a proper time 
 ## 4.4 One Time Signing Service
 
 This is one of the key functionality of eSignatures. This service is responsible to provide the One Time Signature API and interact with the HSM. This service validates the user against the Authorization Building Block.  A valid user is allowed to create a key in HSM and sign it.  Every key created here will also need a X509 certificate. The certificate management module will publish this created X509 certificate. &#x20;
+
+Keys created during One Time Signature should be deleted as soon as the signature process is over. Logs SHOULD be kept in a database of the details of the deletion. Logs MUST include timestamps and identify the user and affiliation that performed the transaction.
 
 ## 4.5 SCD On-Boarding
 

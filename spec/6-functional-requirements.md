@@ -86,11 +86,13 @@ The eSignature BB has several functional layers within it. Some functional layer
 
 ## 6.9 Logging (REQUIRED)
 
-6.9.1 The system SHALL provide traceability across services.
+6.9.1 The system SHALL provide traceability across services using trace Id or similar design patterns.
 
 6.9.2 The system SHALL provide logs to help debug the problems.
 
 6.9.3 The system SHALL NOT print sensitive information.
+
+6.9.4 In case a user/mobile app is involved, then logging SHALL provide traceability from the user to the end.&#x20;
 
 ## 6.10 Metrics (REQUIRED)
 
@@ -99,4 +101,24 @@ The eSignature BB has several functional layers within it. Some functional layer
 6.10.2 The service MAY expose APIs to provide metrics about the performance of the system &#x20;
 
 **Note:** The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)
+
+## 6.11 Messaging Interface
+
+6.11.1 The Messaging interface should send relevant information to the logging sub-block to maintain the history of all messages sent from this Building Block, which are useful for audit purposes (RECOMMENDED)
+
+6.11.2 The messaging interface should provide the necessary protocol, data format, and information and interface to interact with the Messaging Building Block for sending notifications to specific target SCD or User through a variety of channels (SMS/email/etc.) (RECOMMENDED)
+
+## **6.12 Information Mediator Interface** <a href="#6.10-information-mediator-interface" id="6.10-information-mediator-interface"></a>
+
+6.12.1 This sub-block runs protocols to communicate with the Information Mediator Building Block for exposing eSignature private API services to external Building Blocks and applications (REQUIRED)
+
+6.12.2 It also provides specific calls to APIs of information mediator Building Block to access services of ID BB and Authorization BB applications (REQUIRED)
+
+6.12.3 It is responsible for retry and handle failures during down time of other Building Blocks/Apps (such as backoff and retries, etc.) (REQUIRED)
+
+6.12.4 It maintains a list of endpoint addresses of Information Mediator, other Building Blocks, and Applications. These are dedicated API interfaces defined in the Information Mediator Building Block and hence not defined here (REQUIRED)
+
+6.12.5 It routes error information if any to the logger sub-block (RECOMMENDED)
+
+
 

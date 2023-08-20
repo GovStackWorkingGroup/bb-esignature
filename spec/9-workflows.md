@@ -166,20 +166,19 @@ sequenceDiagram
     participant TSA
     activate e-Service
     Note right of e-Service: Get document hash with client side library
-    e-Service->>e-Signature BB frontend: Browser redirects to /sign/interactive passing document hash
+    e-Service->>e-Signature BB backend: Browser redirects to /sign/interactive passing document hash
     deactivate e-Service
+    activate e-Signature BB backend
+    e-Signature BB backend-->>e-Signature BB frontend: Page to display the available eSignature models
+    deactivate e-Signature BB backend
     activate e-Signature BB frontend
     rect rgb(230, 245, 255)
-    alt SCD Model
+    alt SCD Based Signature Model
         e-Signature BB frontend->>e-Signature BB frontend: 
-        Note right of e-Signature BB frontend: User selects SCD based model <br> and enters pseodonym
-        e-Signature BB frontend->>e-Signature BB backend: API call /token/pseodonym
-        activate e-Signature BB backend
-        e-Signature BB backend-->>e-Signature BB frontend: pseodonym token
-        deactivate e-Signature BB backend
+        Note right of e-Signature BB frontend: User selects "Use SCD to Sign" <br> and enters pseodonym
         e-Signature BB frontend->>e-Signature BB backend: API call /sign/pseudonym
         activate e-Signature BB backend
-        e-Signature BB backend->>Remote SCD Service: sign hash, SCD Remote Id
+        e-Signature BB backend->>Remote SCD Service: document hash, SCD Remote Id
         activate Remote SCD Service
         Remote SCD Service->>Remote SCD Service: 
         Note right of Remote SCD Service: User enters Security PIN
@@ -196,7 +195,7 @@ sequenceDiagram
     e-Signature BB frontend->>e-Service: Browser redirects to callback URL with Signature Id
     deactivate e-Signature BB frontend
     activate e-Service
-    e-Service->>e-Signature BB backend: api call /sign/response
+    e-Service->>e-Signature BB backend: API call /sign/response
     activate e-Signature BB backend
     e-Signature BB backend-->>e-Service: signature&timestamp
     deactivate e-Signature BB backend

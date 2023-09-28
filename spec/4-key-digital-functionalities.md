@@ -10,7 +10,7 @@ The Hardware Security Module is an integral part of the eSignatures BB. The HSM 
 
 The SCD is the component where the user's private key would be stored. The SCD could be a Smart card, Mobile App, Sim card App or equivalent. The SCD interacts with the eSignature BB using its own internal protocol. Every eSignature BB will support one or many such SCD. Most of the SCD would be protected with a secure PIN/Biometrics.
 
-The SCD SHOULD be qualified with at least one of the following FIPS 14-2 Level 3 or Annex II of [Regulation (EU) No 910/2014 (eIDAS)](https://en.wikipedia.org/wiki/EIDAS) or equivalent common criteria certification.
+The SCD SHOULD be qualified with at least one of the following FIPS 140-2/3 Level 3 or Annex II of [Regulation (EU) No 910/2014 (eIDAS)](https://en.wikipedia.org/wiki/EIDAS) or equivalent common criteria certification.
 
 ## 4.3 Timestamp
 

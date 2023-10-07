@@ -1,124 +1,94 @@
+---
+description: This section lists the technical capabilities of this Building Block.
+---
+
 # 6 Functional Requirements
 
-The eSignature BB has several functional layers within it. Some functional layers follow the existing set of protocols and custom protocols, While the other functional requirements are defined within this specification. In this section, we will provide a clear indication to state what blocks follow what kind of protocols.
+The eSignature Building Block has several functional layers within it. Some functional layers follow the existing set of protocols and custom protocols, While the other functional requirements are defined within this specification. In this section, we will provide a clear indication to state what blocks follow what kind of protocols.
 
-## 6.1 HSM (REQUIRED)
+## 6.1 HSM
 
-6.1.1 In case of the One-time signature A HSM MUST be used to create cryptographic keys. (Required)
+* In the case of the One-Time Signature, a Hardware Security Module (HSM) must be used to create cryptographic keys. (REQUIRED)
+* It must be used to sign a certificate. (REQUIRED)
+* Keys shall not be exported. (REQUIRED)
+* MUST be protected well with best security practices. (REQUIRED)
 
-6.1.2 It MUST be used to sign a certificate. (Required)
+## 6.2 SCD
 
-6.1.3 Keys SHALL NOT be exported
+* Signature Creation Device (SCD) should have secure storage to protect private keys. (REQUIRED)
+* SCD may have proprietary APIs with the eSignature Building Block. (REQUIRED)
+* SCD is assumed to be with the user. (REQUIRED)
+* A user's PIN is a must for the SCD. (REQUIRED)
+* Keys shall not be exportable. (REQUIRED)
 
-6.1.4 MUST be protected well with best security practices.
+## 6.3 Timestamp&#x20;
 
-## 6.2 SCD (REQUIRED)
+* For a valid signature, a timestamp server is a must. (REQUIRED)
+* The timestamp server shall follow [RFC3161](https://www.ietf.org/rfc/rfc3161.txt). (REQUIRED)
 
-6.2.1 SCD Device SHOULD have secure storage to protect private keys
+## 6.4 Certifying Authority
 
-6.2.2 SCD MAY have proprietary API's with the e-Signature block.
+* eSignature Building Block may be a certifying authority. (REQUIRED)
+* If not, the Building Block shall have access to a certifying authority and be able to issue certificates or be a subordinate certification authority. (REQUIRED)
 
-6.2.3 SCD is assumed to be with the user.
+## 6.5 eSignature Service&#x20;
 
-6.2.4 User PIN is a MUST for the SCD.
+* Service shall support the onboarding of the Signature Creation Device (SCD). (REQUIRED)
+* Service shall support both the key functionalities of signing using SCD and One-Time Signature. (REQUIRED)
+* The user shall be authenticated through the ID Building Block for the One-Time Signature. (REQUIRED)
+* The user shall be allowed to perform a signature through a pseudonym without user login. (REQUIRED)
+* Optionally can support payments through a payment gateway. (OPTIONAL)
+* Shall support all the listed signature types. (REQUIRED)
+* Shall support redirection and callback as per the specification. (REQUIRED)
 
-6.2.5 Keys SHALL NOT be exportable.
+## 6.6 Audit&#x20;
 
-## 6.3 Timestamp (REQUIRED)
+* All user activities should be available for audit. (REQUIRED)
+* May have the feature to tamper-proof the audit records. (REQUIRED)
+* Auditors shall have the ability to get audit-proof of a transaction. (REQUIRED)
 
-6.3.1 For a valid signature, a Timestamp server is a MUST.
+## 6.7 Certificate Management&#x20;
 
-6.3.2 Timestamp server SHALL follow RFC3161&#x20;
+* Shall provide the ability to list and revoke a certificate. (REQUIRED)
+* The user shall have the ability to revoke their keys (API-based or through customer care). (REQUIRED)
+* Certificates shall have any of the following statuses (REQUIRED):
+  * Active – certificate is active and can be used for signing.
+  * Expired – certificates are expired and should be renewed.
+  * Suspended – certificate is suspended. The reason for suspension shall be provided together with status information.
+  * Revoked – certificate is revoked. The reason for revoking shall be provided together with status information.
+* Users shall be able to view their certificates and corresponding statuses. (REQUIRED)
 
-## 6.4 Certifying Authority (REQUIRED)
+## 6.8 Notification
 
-6.4.1 eSignature BB MAY be a certifying authority.
+* Shall provide the ability to notify the user over email, SMS, app notification, or any other equivalent. (REQUIRED)
+* The user shall be notified of failed and successful transactions. (REQUIRED)
 
-6.4.2 If not the BB SHALL have access to a certifying authority and can issue certificates or can be a Sub CA
+## 6.9 Messaging Interface
 
-## 6.5 eSignature Service (REQUIRED)
+* The Messaging interface should send relevant information to the logging sub-block to maintain the history of all messages sent from this Building Block, which are useful for audit purposes. (RECOMMENDED)
+* The messaging interface should provide the necessary protocol, data format, and information and interface to interact with the Messaging Building Block for sending notifications to a specific target Signature Creation Device or user through a variety of channels (SMS/email/etc.) (RECOMMENDED)
 
-6.5.1 Service SHALL support onboarding of SCD
+## **6.10 Information Mediator Interface** <a href="#6.10-information-mediator-interface" id="6.10-information-mediator-interface"></a>
 
-6.5.2 Service SHALL support both the key functionalities of signing using SCD and One-Time Signature.
+* This sub-block runs protocols to communicate with the Information Mediator Building Block for exposing eSignature private API services to external Building Blocks and applications. (REQUIRED)
+* It also provides specific calls to APIs of the Information Mediator Building Block to access services of ID Building Block and Authorization Building Block applications. (REQUIRED)
+* It is responsible for retrying and handling failures during downtime of other Building Blocks/Apps (such as backoff and retries, etc.). (REQUIRED)
+* It maintains a list of endpoint addresses of the Information Mediator and other Building Blocks/Applications. These are dedicated API interfaces defined in the Information Mediator Building Block and hence not defined here. (REQUIRED)
+* It routes error information if any to the logger sub-block. (RECOMMENDED)
 
-6.5.3 User SHALL be authenticated through ID BB for Onetime Signature
+## 6.11 Logging&#x20;
 
-6.5.4 User SHALL be allowed to perform signature through pseudonym without user login.
+* The system shall provide traceability across services using trace ID or similar design patterns. (REQUIRED)
+* The system shall provide logs to help debug the problems. (REQUIRED)
+* The system shall not print sensitive information. (REQUIRED)
+* In case a user/mobile app is involved, then logging shall provide traceability from the user to the end. (REQUIRED)
 
-6.5.5 OPTIONALLY can support payments through a payment gateway.
+## 6.12 Metrics&#x20;
 
-6.5.6 SHALL support all the listed signature types.
+* The system shall provide an API to get health status. (REQUIRED)
+* The service may expose APIs to provide metrics about the performance of the system. (REQUIRED)
 
-6.5.7 SHALL support redirection and callback as per the specification.
-
-## 6.6 Certificate Management (REQUIRED)
-
-6.6.1 SHALL provide the ability to list & revoke a certificate.
-
-6.6.2  User SHALL have the ability to revoke his/her keys (API based or through customer care)
-
-6.6.3 Certificates SHALL have any of the following statuses
-
-6.6.3.1 ACTIVE – certificate is active and can be used for signing
-
-6.6.3.2 EXPIRED – certificates are expired and should be renewed
-
-6.6.3.3 SUSPENDED – certificate is suspended. The reason for suspension SHALL be provided together with status information
-
-6.6.3.4 REVOKED – certificate is revoked. The reason for revoking SHALL be provided together with status information
-
-6.6.4 Users SHALL be able to view their own certificates and their statuses
-
-## 6.7 Notification (REQUIRED)
-
-6.7.1 SHALL provide the ability to notify the user over email or sms or app notification or any other equivalent
-
-6.7.2 User SHALL be notified of failed and successful transactions.
-
-## 6.8 Audit (REQUIRED)
-
-&#x20;6.8.1 All user activities SHOULD be available for audit.
-
-6.8.2 MAY have the feature to tamper-proof the audit records.
-
-6.8.3 Auditors SHALL have the ability to get audit-proof of a transaction.
-
-## 6.9 Logging (REQUIRED)
-
-6.9.1 The system SHALL provide traceability across services using trace Id or similar design patterns.
-
-6.9.2 The system SHALL provide logs to help debug the problems.
-
-6.9.3 The system SHALL NOT print sensitive information.
-
-6.9.4 In case a user/mobile app is involved, then logging SHALL provide traceability from the user to the end.&#x20;
-
-## 6.10 Metrics (REQUIRED)
-
-6.10.1 The system SHALL provide API to get health status
-
-6.10.2 The service MAY expose APIs to provide metrics about the performance of the system &#x20;
-
-**Note:** The keywords "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT", "SHOULD", "SHOULD NOT", "RECOMMENDED", "MAY", and "OPTIONAL" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)
-
-## 6.11 Messaging Interface
-
-6.11.1 The Messaging interface should send relevant information to the logging sub-block to maintain the history of all messages sent from this Building Block, which are useful for audit purposes (RECOMMENDED)
-
-6.11.2 The messaging interface should provide the necessary protocol, data format, and information and interface to interact with the Messaging Building Block for sending notifications to specific target SCD or User through a variety of channels (SMS/email/etc.) (RECOMMENDED)
-
-## **6.12 Information Mediator Interface** <a href="#6.10-information-mediator-interface" id="6.10-information-mediator-interface"></a>
-
-6.12.1 This sub-block runs protocols to communicate with the Information Mediator Building Block for exposing eSignature private API services to external Building Blocks and applications (REQUIRED)
-
-6.12.2 It also provides specific calls to APIs of information mediator Building Block to access services of ID BB and Authorization BB applications (REQUIRED)
-
-6.12.3 It is responsible for retry and handle failures during down time of other Building Blocks/Apps (such as backoff and retries, etc.) (REQUIRED)
-
-6.12.4 It maintains a list of endpoint addresses of Information Mediator, other Building Blocks, and Applications. These are dedicated API interfaces defined in the Information Mediator Building Block and hence not defined here (REQUIRED)
-
-6.12.5 It routes error information if any to the logger sub-block (RECOMMENDED)
+**Note:** The keywords "must", "must not", "required", "shall", "shall not", "should", "should not", "recommended", "may", and "optional" in this document are to be interpreted as described in [RFC 2119](https://www.rfc-editor.org/rfc/rfc2119)
 
 
 

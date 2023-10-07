@@ -1,16 +1,22 @@
+---
+description: >-
+  This section provides a reference for APIs that should be implemented by this
+  Building Block.
+---
+
 # 8 Service APIs
 
-A Set of microservices are defined to receive requests from other GovStack-compatible Building Blocks and third party Services with relevant inputs and return processed results from key digital functionalities of this Building Block. This section provides a reference for APIs that should be implemented by this Building Block. The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks or third party Services. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.
+A Set of microservices is defined to receive requests from other GovStack-compatible Building Blocks and third-party Services with relevant inputs and return processed results from key digital functionalities of this Building Block. This section provides a reference for APIs that should be implemented by this Building Block. The APIs defined here establish a blueprint for how the Building Block will interact with other Building Blocks or third-party services. Additional APIs may be implemented by the Building Block, but the listed APIs define a minimal set of functionality that should be provided by any implementation of this Building Block.
 
-eSignature Building Block must expose its microservices through RESTful API interfaces as defined by OpenAPI v3+ standards.  A summary of the APIS exposed by this Building Block is summarized in the table below.&#x20;
+eSignature Building Block must expose its microservices through RESTful API interfaces as defined by [OpenAPI v3+ standards](https://swagger.io/specification/).  A summary of the APIS exposed by this Building Block is summarized in the table below.&#x20;
 
-### 8.1 eSignature with one time certificate
+### 8.1 eSignature with one-time certificate
 
 {% swagger src="https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml" path="/{version}/sign/onetime" method="post" %}
 [https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml](https://raw.githubusercontent.com/GovStackWorkingGroup/bb-esignature/main/api/swagger.yaml)
 {% endswagger %}
 
-### 8.2 eSignature with user's device (SCD)
+### 8.2 eSignature with user's eSignature creation device (SCD)
 
 #### 8.2.1 Certificate creation
 

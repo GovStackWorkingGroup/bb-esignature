@@ -1,22 +1,16 @@
+---
+description: >-
+  This section provides information on the core data structures/data models that
+  are used by this Building Block.
+---
+
 # 7 Data Structures
 
-_\<Example Data Elements>_
+## 7.1 Data Structures
 
-### 2.1.4 eSignature formats
+### 7.1.1 eSignature operation
 
-Add support for the following signature formats:
-
-* XAdES -  XML signatures
-* PAdES - PDF signatures
-* CAdES - CMS Signatures
-* ASIC - Interoperable signatures
-* JWS (RFC 7515)
-
-_ents>_
-
-### 7.1 eSignature operation
-
-| Data element         | Type                                                                               | Description                                               |
+| Name                 | Type                                                                               | Description                                               |
 | -------------------- | ---------------------------------------------------------------------------------- | --------------------------------------------------------- |
 | Signature Id         | string                                                                             | Identifier for signature operations                       |
 | Signature type       | String enum ONETIME, SCD                                                           |                                                           |
@@ -32,28 +26,28 @@ _ents>_
 | Status               | Enum of OK, ERROR                                                                  | Request status                                            |
 | Status description   | String                                                                             | Description of status                                     |
 
-### 7.2 eSignature operation with onetime certificate
+### 7.1.2 eSignature operation with one-time certificate
 
-| Data element         | Type       | Description                       |
-| -------------------- | ---------- | --------------------------------- |
-| Authentication token | String Jwt | Token from ID BB                  |
-| Payment token        | String Jwt | Token from Payments BB            |
-| Signature id         | String     | Reference to eSignature operation |
+| Name                 | Type       | Description                        |
+| -------------------- | ---------- | ---------------------------------- |
+| Authentication token | String Jwt | Token from ID Building Block       |
+| Payment token        | String Jwt | Token from Payments Building Block |
+| Signature id         | String     | Reference to eSignature operation  |
 
-### 7.3 eSignature operation with user's device
+### 7.1.3 eSignature operation with user's device
 
-| Data element    | Type       | Description                       |
+| Name            | Type       | Description                       |
 | --------------- | ---------- | --------------------------------- |
 | Callback url    | String     | URL to call back with results     |
 | Pseudonym token | Jwt String | Pseudonym token used              |
 | Signature id    | String     | Reference to eSignature operation |
 
-### 7.2 Certificates used with user's device
+### 7.1.4 Certificates used with user's device
 
 | Data element                   | Type                                                                                                                                                                              | Description                                                                                                                                                                                         |
 | ------------------------------ | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
-| Authentication token           | String Jwt                                                                                                                                                                        | Token from ID BB                                                                                                                                                                                    |
-| Payment token                  | String Jwt                                                                                                                                                                        | Token from Payments BB                                                                                                                                                                              |
+| Authentication token           | String Jwt                                                                                                                                                                        | Token from ID Building Block                                                                                                                                                                        |
+| Payment token                  | String Jwt                                                                                                                                                                        | Token from Payments Building Block                                                                                                                                                                  |
 | CSR                            | String                                                                                                                                                                            | Certificate signing request PKCS#10 in PEM format                                                                                                                                                   |
 | SCD Type                       | <p>String enum of REMOTE_SCD_APP_APPLE, REMOTE_SCD_APP_ANDROID, REMOTE_SCD_APP_SE_APPLE, REMOTE_SCD_APP_SE_ANDROID, REMOTE_SCD_SIM, REMOTE_SCD_ESIM,</p><p>REMOTE_SCD_SMARTID</p> | The SCD type that is used by user                                                                                                                                                                   |
 | SCD Key id                     | Number                                                                                                                                                                            | Key id for case the SCD has multiple certificates                                                                                                                                                   |

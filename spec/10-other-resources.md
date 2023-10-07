@@ -1,16 +1,10 @@
 # 10 Other Resources
 
-{% hint style="success" %}
-This section can be used to link to any external documents that may be relevant, such as standards documents or other descriptions of this building block that may be useful
-
-This section should contain at minimum, links to the Cross-BB Workflows that have been defined for this BB, the Key Decision Log (Confluence), and Future Considerations (Confluence)
-{% endhint %}
-
-_\<Example Other Resources>_
-
 ## 10.1 Example Cross-Building Block Workflows
 
 Some common workflows that leverage the eSignature Building Block can be found here:&#x20;
+
+[https://govstack-global.atlassian.net/wiki/spaces/GH/pages/261947413/eSignature+Use+Case](https://govstack-global.atlassian.net/wiki/spaces/GH/pages/261947413/eSignature+Use+Case)
 
 ## 10.2 Key Decision Log
 

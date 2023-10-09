@@ -76,14 +76,7 @@ The eSignature Building Block has several functional layers within it. Some func
 * It maintains a list of endpoint addresses of the Information Mediator and other Building Blocks/Applications. These are dedicated API interfaces defined in the Information Mediator Building Block and hence not defined here. (REQUIRED)
 * It routes error information if any to the logger sub-block. (RECOMMENDED)
 
-## 6.11 Logging&#x20;
-
-* The system shall provide traceability across services using trace ID or similar design patterns. (REQUIRED)
-* The system shall provide logs to help debug the problems. (REQUIRED)
-* The system shall not print sensitive information. (REQUIRED)
-* In case a user/mobile app is involved, then logging shall provide traceability from the user to the end. (REQUIRED)
-
-## 6.12 Metrics&#x20;
+## 6.11 Metrics&#x20;
 
 * The system shall provide an API to get health status. (REQUIRED)
 * The service may expose APIs to provide metrics about the performance of the system. (REQUIRED)

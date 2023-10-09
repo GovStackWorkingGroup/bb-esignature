@@ -8,7 +8,7 @@ description: >-
 
 The Cross-cutting requirements described in this section are an extension of the cross-cutting requirements defined in the architecture specification document.
 
-## 5.1 HSM Compliance (REQUIRED)
+## 5.1 Hardware Security Module Compliance (REQUIRED)
 
 HSM must be compliant to a minimum of FIPS 140-2 Level 3. This guarantees the protection of private keys. HSM/Key Management application shall not print any information about the end-use details. Keys should be created only within the HSM. This may apply to all other Building Blocks when dealing with cryptographic keys.
 

@@ -1,3 +1,3 @@
 # E-Signature
 
-Developed by Sasikumar Ganesan, Jurgen Niinre,  Dr. P. S. Ramkumar, Kassy Kadio, in cooperation with GIZ, ITU, and DIAL
+Developed by Sasikumar Ganesan, Jurgen Niinre,  Dr. P. S. Ramkumar, Kassy Kadio, in cooperation with GIZ, ITU, and DIAL, Mikael Linden, David Higgins

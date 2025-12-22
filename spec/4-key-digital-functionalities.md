@@ -24,7 +24,7 @@ The time of a sign is an important part of the signature. Without a proper time 
 
 ## 4.4 One-Time Signing Service
 
-This is one of the most important functionality of eSignature. This service is responsible for providing the One Time Signature API and interacts with the Hardware Security Module (HSM). This service validates the user against the Authorization Building Block.  A valid user is allowed to create a key in HSM and sign it.  Every key created here will also need an X509 certificate. The certificate management module will publish this created X509 certificate. &#x20;
+This is one of the most important functionality of eSignature. This service is responsible for providing the One Time Signature API and interacts with the Hardware Security Module (HSM). This service validates the user against the Identity Building Block.  A valid user is allowed to create a key in HSM and sign it.  Every key created here will also need an X509 certificate. The certificate management module will publish this created X509 certificate. &#x20;
 
 Keys created during One Time Signature should be deleted after the signature process. Logs SHOULD be kept in a database of the details of the deletion. Logs MUST include timestamps and identify the user and affiliation that performed the transaction.
 

@@ -33,9 +33,9 @@ With eSignature there is no need to print documents on paper anymore, saving a l
 * Certification Authority: a certification authority that can issue a certificate as X509.
 * Timestamp Authority: a trusted third party who can provide certified time.&#x20;
 
-## 2.2 eSignature Lifecycle
+## 2.2 eSignature deployment models
 
-There are two lifecycles available for the eSignature Building Block. Both mechanisms have their own unique advantages, therefore it is recommended to follow both for an inclusive approach.&#x20;
+There are two deployment models available for the eSignature Building Block. Both mechanisms have their own unique advantages, therefore it is recommended to follow both for an inclusive approach.&#x20;
 
 ### 2.2.1 One-Time Signature Approach
 
@@ -56,11 +56,7 @@ One-time signatures are one of the easiest ways to get large-scale adoption of e
 
 The SCD (Signature Creation Device) is a personal device of the user. It could be a Mobile Phone, SIM card, Smart Card, Secure SD Card, USB Storage device, NFC Card, etc. The SCD device can be used to store the keys for long-term usage. This allows the user to interact with the ID Building Block once and create a key on the SCD. This key then can be used for signing any document without interacting with the ID Building block.
 
-<div data-full-width="true">
-
-<figure><img src=".gitbook/assets/Onboard.jpg" alt=""><figcaption><p>SCD Onboard</p></figcaption></figure>
-
-</div>
+<div data-full-width="true"><figure><img src=".gitbook/assets/Onboard.jpg" alt=""><figcaption><p>SCD Onboard</p></figcaption></figure></div>
 
 The binding of the private key with the user is called On-boarding. In this process, a user is authenticated and his key is created on the SCD.&#x20;
 
@@ -135,7 +131,7 @@ Supports the following signature formats:
 * [XAdES -  XML signatures](https://www.w3.org/TR/XAdES/)
 * [PAdES - PDF signatures](https://www.iso.org/standard/67937.html)
 * [CAdES - CMS Signatures](https://www.rfc-editor.org/rfc/rfc5126)
-* [ASIC - Interoperable signatures](https://www.etsi.org/deliver/etsi\_en/319100\_319199/31916201/01.01.01\_60/en\_31916201v010101p.pdf)
+* [ASIC - Interoperable signatures](https://www.etsi.org/deliver/etsi_en/319100_319199/31916201/01.01.01_60/en_31916201v010101p.pdf)
 * [JWS (RFC 7515)](https://www.rfc-editor.org/rfc/rfc7515)
 
 ## 2.6 Authentication and Security

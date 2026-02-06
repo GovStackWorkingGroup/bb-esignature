@@ -4,7 +4,7 @@ description: Terminology used within this specification.
 
 # 3 Terminology
 
-We recognise there are common terms across all ID related Building Blocks (Identity, E-Signature, Consent, Wallet).  We define these [here](/broken/pages/G8wr9foLwthyK0hPnuG9).
+We recognise there are common terms across all ID related Building Blocks (Identity, E-Signature, Consent, Wallet).  We define these [here](https://app.gitbook.com/s/cuIQsUm31pRS11jL4LMg/3-terminology/id-related-bb-common-terminology).
 
 In addition the following terms are specific to the e-Signature Building Block.
 
